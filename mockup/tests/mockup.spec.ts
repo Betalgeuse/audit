@@ -40,7 +40,7 @@ test.describe('Factset Audit POC Mock-up', () => {
       await page.click('button:has-text("한국 시장")');
       
       await expect(page.locator('text=I. 매출액')).toBeVisible();
-      await expect(page.locator('text=제4기')).toBeVisible();
+      await expect(page.locator('text=제74기')).toBeVisible();
       await expect(page.locator('text=주석')).toBeVisible();
     });
 
@@ -95,8 +95,8 @@ test.describe('Factset Audit POC Mock-up', () => {
     test('should display jushuk markers in Korean table', async ({ page }) => {
       await page.click('button:has-text("한국 시장")');
       
-      await expect(page.locator('text=(주5,6)')).toBeVisible();
-      await expect(page.locator('text=(주28,33)')).toBeVisible();
+      await expect(page.locator('text=(주4,26)')).toBeVisible();
+      await expect(page.locator('text=(주28)')).toBeVisible();
     });
 
     test('should show popup when hovering jushuk marker', async ({ page }) => {
@@ -183,12 +183,15 @@ test.describe('Factset Audit POC Mock-up', () => {
   });
 
   test.describe('Highlight Animation', () => {
-    test('should highlight target cell in document viewer', async ({ page }) => {
+    test('should highlight target text in PDF viewer', async ({ page }) => {
       await page.click('td.clickable >> nth=0');
       
-      // Check if highlight class is applied
-      const highlightedCell = page.locator('.highlight-cell');
-      await expect(highlightedCell).toBeVisible();
+      // Wait for PDF to load and highlight to be applied
+      await page.waitForTimeout(2000);
+      
+      // Check if highlight class is applied to text in PDF
+      const highlightedText = page.locator('.highlight-text');
+      await expect(highlightedText.first()).toBeVisible({ timeout: 10000 });
     });
   });
 
@@ -212,13 +215,18 @@ test.describe('Factset Audit POC Mock-up', () => {
     test('should display zoom controls', async ({ page }) => {
       await page.click('td.clickable >> nth=0');
       
+      // Wait for PDF viewer to load
+      await page.waitForTimeout(1000);
       await expect(page.locator('text=100%')).toBeVisible();
     });
 
     test('should display page navigation', async ({ page }) => {
       await page.click('td.clickable >> nth=0');
       
-      await expect(page.locator('text=Page')).toBeVisible();
+      // Wait for PDF to load and show page count
+      await page.waitForTimeout(2000);
+      // Look for page number format "X / Y"
+      await expect(page.locator('.pdf-toolbar')).toContainText(/\d+\s*\/\s*\d+/);
     });
   });
 });
