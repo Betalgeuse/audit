@@ -1,0 +1,40 @@
+{
+  "responses": [
+    {
+      "triggers": ["summarize", "summary", "what does this say", "explain this"],
+      "context": "note-4",
+      "response": "**Summary: Cash and Cash Equivalents (Note 4)**\n\n• **Total cash position:** $5,010 million as of Oct 2017\n• **Foreign holdings:** $4,212 million (84%) held by foreign subsidiaries\n• **Composition:** Primarily money market funds and time deposits\n• **Year-over-year change:** +$1,604M (+47% vs Oct 2016)\n\n**Key Insight:** Strong liquidity position driven by robust semiconductor equipment demand.\n\n[Source: 10-K FY2017, Note 4, p.67]"
+    },
+    {
+      "triggers": ["summarize", "summary", "what does this say"],
+      "context": "note-12",
+      "response": "**Summary: Stockholders' Equity (Note 12)**\n\n• **Authorized shares:** 2.5 billion common shares\n• **Outstanding shares:** 1.074 billion as of Oct 2017\n• **Stock repurchase:** $1.2B spent to buy back 29M shares in FY17\n• **Dividends:** $0.40/share paid ($432M total)\n\n**Key Insight:** Active capital return program with both buybacks and dividends.\n\n[Source: 10-K FY2017, Note 12, p.78]"
+    },
+    {
+      "triggers": ["prior year", "last year", "previous year", "yoy", "year over year", "compare"],
+      "context": "note-4",
+      "response": "**Year-over-Year Comparison: Cash Position**\n\n| Metric | Oct 2017 | Oct 2016 | Change |\n|--------|----------|----------|--------|\n| Cash & Equivalents | $5,010M | $3,406M | **+$1,604M (+47%)** |\n| Money Market Funds | $2,845M | $1,923M | +$922M |\n| Time Deposits | $1,876M | $1,234M | +$642M |\n\n**Primary Drivers:**\n• Strong operating cash flow from semiconductor equipment sales\n• Record revenue year ($14.5B, +34% YoY)\n• Disciplined capital expenditure management\n\n[Source: 10-K FY2017 p.67, FY2016 p.65]"
+    },
+    {
+      "triggers": ["prior year", "last year", "yoy", "compare"],
+      "context": "general",
+      "response": "**Year-over-Year Financial Comparison (FY2017 vs FY2016)**\n\n| Metric | FY2017 | FY2016 | Change |\n|--------|--------|--------|--------|\n| Revenue | $14,537M | $10,825M | **+34%** |\n| Gross Profit | $6,517M | $4,623M | +41% |\n| Operating Income | $4,363M | $2,700M | +62% |\n| Net Income | $3,434M | $1,721M | **+100%** |\n\n**Key Highlights:**\n• Revenue growth driven by semiconductor systems (+38%)\n• Gross margin improved to 44.8% from 42.7%\n• Operating leverage drove profit doubling\n\n[Source: 10-K FY2017, Consolidated Statements, p.45]"
+    },
+    {
+      "triggers": ["risk", "risks", "risk factor", "what are the risks"],
+      "context": "general",
+      "response": "**Key Risk Factors (FY2017)**\n\n**1. Industry Cyclicality** ⚠️\n• Semiconductor equipment is highly cyclical\n• Customer capex tied to memory pricing\n\n**2. Customer Concentration**\n• Top 10 customers = 58% of revenue\n• Samsung, TSMC, Intel are major customers\n\n**3. Global Operations**\n• Currency fluctuations impact (strong dollar headwind)\n• Trade policies and tariffs\n• Export control regulations\n\n**4. Technology Evolution**\n• Rapid pace of semiconductor innovation\n• Risk of technology obsolescence\n• R&D investment requirements (~$1.9B/year)\n\n**5. Supply Chain**\n• Component shortages\n• Single-source suppliers\n\n[Source: 10-K FY2017, Item 1A Risk Factors, p.12-25]"
+    },
+    {
+      "triggers": ["revenue", "sales", "top line", "revenue breakdown"],
+      "context": "general",
+      "response": "**Revenue Analysis FY2017**\n\n**Total Revenue: $14,537 million** (+34% YoY)\n\n**By Segment:**\n| Segment | Revenue | % of Total | YoY Change |\n|---------|---------|------------|------------|\n| Semiconductor Systems | $9,824M | 68% | +38% |\n| Applied Global Services | $3,456M | 24% | +21% |\n| Display & Adjacent | $1,257M | 8% | +45% |\n\n**By Geography:**\n• Taiwan: 26% (TSMC)\n• China: 22%\n• Korea: 20% (Samsung, SK Hynix)\n• Japan: 13%\n• United States: 11%\n• Europe: 8%\n\n[Source: 10-K FY2017, p.45-47]"
+    },
+    {
+      "triggers": ["accounting", "policy", "accounting policy", "gaap"],
+      "context": "general",
+      "response": "**Key Accounting Policies (AMAT)**\n\n**1. Revenue Recognition**\n• Recognizes when control transfers to customer\n• Equipment: upon delivery and acceptance\n• Services: ratably over contract period\n• Adopted ASC 606 effective FY2018\n\n**2. Inventory Valuation**\n• Lower of cost or net realizable value\n• First-in, first-out (FIFO) method\n• Reserves for excess and obsolete inventory\n\n**3. Property & Equipment**\n• Straight-line depreciation\n• Useful lives: 3-30 years\n• Annual impairment review\n\n**4. Goodwill & Intangibles**\n• Goodwill tested annually for impairment\n• Intangibles amortized over useful lives\n\n[Source: 10-K FY2017, Note 1, p.55-58]"
+    }
+  ],
+  "defaultResponse": "I found relevant information in the document. To provide a more specific answer, you can:\n\n• **Click on a specific cell** in the financial table\n• **Hover over a footnote** to see its details\n• **Ask about specific topics** like:\n  - \"What was revenue in FY17?\"\n  - \"Summarize Note 4\"\n  - \"Compare to prior year\"\n  - \"What are the risk factors?\"\n\n[Searching: AMAT 10-K FY2017...]"
+}

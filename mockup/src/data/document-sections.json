@@ -1,0 +1,102 @@
+{
+  "US": {
+    "title": "AMAT 10-K FY2017",
+    "sections": [
+      { "id": "cover", "title": "Cover", "page": 1 },
+      { "id": "toc", "title": "Table of Contents", "page": 2 },
+      {
+        "id": "part1",
+        "title": "Part I",
+        "page": 5,
+        "children": [
+          { "id": "item1", "title": "Item 1. Business", "page": 5 },
+          { "id": "item1a", "title": "Item 1A. Risk Factors", "page": 12 },
+          { "id": "item2", "title": "Item 2. Properties", "page": 26 },
+          { "id": "item3", "title": "Item 3. Legal Proceedings", "page": 27 }
+        ]
+      },
+      {
+        "id": "part2",
+        "title": "Part II",
+        "page": 28,
+        "children": [
+          { "id": "item5", "title": "Item 5. Market for Stock", "page": 28 },
+          { "id": "item6", "title": "Item 6. Selected Financial Data", "page": 30 },
+          { "id": "item7", "title": "Item 7. MD&A", "page": 32 },
+          { "id": "item8", "title": "Item 8. Financial Statements", "page": 44 }
+        ]
+      },
+      {
+        "id": "financials",
+        "title": "Financial Statements",
+        "page": 45,
+        "children": [
+          { "id": "income-statement", "title": "Consolidated Statements of Operations", "page": 45 },
+          { "id": "balance-sheet", "title": "Consolidated Balance Sheets", "page": 46 },
+          { "id": "cash-flow", "title": "Consolidated Statements of Cash Flows", "page": 47 },
+          { "id": "equity", "title": "Consolidated Statements of Stockholders' Equity", "page": 48 }
+        ]
+      },
+      {
+        "id": "notes",
+        "title": "Notes to Financial Statements",
+        "page": 55,
+        "children": [
+          { "id": "note-1", "title": "Note 1. Basis of Presentation", "page": 55 },
+          { "id": "note-2", "title": "Note 2. Summary of Significant Accounting Policies", "page": 56 },
+          { "id": "note-3", "title": "Note 3. Recent Accounting Pronouncements", "page": 62 },
+          { "id": "note-4", "title": "Note 4. Cash and Cash Equivalents", "page": 67 },
+          { "id": "note-5", "title": "Note 5. Investments", "page": 68 },
+          { "id": "note-12", "title": "Note 12. Stockholders' Equity", "page": 78 }
+        ]
+      }
+    ]
+  },
+  "KR": {
+    "title": "SK하이닉스 분기보고서 2024.11",
+    "sections": [
+      { "id": "cover", "title": "표지", "page": 1 },
+      { "id": "toc", "title": "목차", "page": 2 },
+      {
+        "id": "part1",
+        "title": "I. 회사의 개요",
+        "page": 3,
+        "children": [
+          { "id": "company-info", "title": "1. 회사의 개요", "page": 3 },
+          { "id": "history", "title": "2. 회사의 연혁", "page": 5 }
+        ]
+      },
+      {
+        "id": "part2",
+        "title": "II. 사업의 내용",
+        "page": 8,
+        "children": [
+          { "id": "business", "title": "1. 사업의 개요", "page": 8 },
+          { "id": "products", "title": "2. 주요 제품", "page": 10 }
+        ]
+      },
+      {
+        "id": "financials",
+        "title": "III. 재무에 관한 사항",
+        "page": 12,
+        "children": [
+          { "id": "consolidated-income", "title": "1. 연결포괄손익계산서", "page": 12 },
+          { "id": "consolidated-balance", "title": "2. 연결재무상태표", "page": 15 },
+          { "id": "consolidated-cashflow", "title": "3. 연결현금흐름표", "page": 18 }
+        ]
+      },
+      {
+        "id": "notes",
+        "title": "IV. 주석",
+        "page": 25,
+        "children": [
+          { "id": "note-basis", "title": "주석 1. 일반사항", "page": 25 },
+          { "id": "note-policy", "title": "주석 2-3. 회계정책", "page": 35 },
+          { "id": "jushuk-5", "title": "주석 5. 매출액", "page": 45 },
+          { "id": "jushuk-28", "title": "주석 28. 매출원가", "page": 78 },
+          { "id": "jushuk-29", "title": "주석 29. 판매비와관리비", "page": 82 }
+        ]
+      }
+    ]
+  }
+}

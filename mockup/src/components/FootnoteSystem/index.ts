@@ -1,0 +1,1 @@
+export { FootnotePopup } from './FootnotePopup';

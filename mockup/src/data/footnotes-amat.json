@@ -1,0 +1,49 @@
+{
+  "footnotes": [
+    {
+      "id": "note-1",
+      "marker": "1",
+      "triggerPatterns": ["[1]", "(1)", "¹"],
+      "title": "Basis of Presentation",
+      "preview": "The consolidated financial statements include the accounts of Applied Materials, Inc. and its subsidiaries...",
+      "fullContent": "Note 1: Basis of Presentation\n\nThe consolidated financial statements include the accounts of Applied Materials, Inc. and its subsidiaries after elimination of intercompany balances and transactions. The Company's fiscal year ends on the last Sunday of October.\n\nThe preparation of financial statements in conformity with U.S. generally accepted accounting principles requires management to make judgments, estimates and assumptions that affect the amounts reported in the consolidated financial statements.",
+      "targetPage": 55
+    },
+    {
+      "id": "note-4",
+      "marker": "Note 4",
+      "triggerPatterns": ["See Note 4", "(Note 4)", "Note 4"],
+      "title": "Cash and Cash Equivalents",
+      "preview": "The Company considers all highly liquid investments with original maturities of three months or less...",
+      "fullContent": "Note 4: Cash and Cash Equivalents\n\nThe Company considers all highly liquid investments with original maturities of three months or less at the date of purchase to be cash equivalents. Cash equivalents consist primarily of money market funds and time deposits.\n\nAs of October 29, 2017, cash and cash equivalents totaled $5,010 million, of which $4,212 million was held by foreign subsidiaries.\n\nThe following table summarizes cash and cash equivalents:\n\n                           Oct 2017    Oct 2016\nMoney market funds         $2,845      $1,923\nTime deposits              $1,876      $1,234\nOther                      $289        $249\nTotal                      $5,010      $3,406",
+      "targetPage": 67
+    },
+    {
+      "id": "note-12",
+      "marker": "Note 12",
+      "triggerPatterns": ["See Note 12", "(Note 12)", "Note 12"],
+      "title": "Stockholders' Equity",
+      "preview": "The Company is authorized to issue 2,500,000,000 shares of common stock...",
+      "fullContent": "Note 12: Stockholders' Equity\n\nCommon Stock\nThe Company is authorized to issue 2,500,000,000 shares of common stock. As of October 29, 2017, 1,074,223,064 shares were issued and outstanding.\n\nStock Repurchase Program\nIn March 2017, the Board of Directors approved a new stock repurchase program authorizing up to $4.0 billion in repurchases. During fiscal 2017, the Company repurchased 29 million shares for $1.2 billion.\n\nDividends\nThe Company paid dividends of $0.40 per share during fiscal 2017, totaling $432 million.",
+      "targetPage": 78
+    },
+    {
+      "id": "asc-606",
+      "marker": "ASC 606",
+      "triggerPatterns": ["ASC 606", "ASC606"],
+      "title": "ASC 606 - Revenue Recognition",
+      "preview": "Revenue from Contracts with Customers, effective for fiscal years beginning after December 15, 2017.",
+      "fullContent": "ASC 606 - Revenue from Contracts with Customers\n\nThe new standard establishes a comprehensive framework for determining when and how much revenue to recognize. The core principle is that revenue should be recognized to depict the transfer of promised goods or services to customers in an amount that reflects the consideration the Company expects to receive.\n\nThe Company adopted ASC 606 effective October 30, 2017 using the modified retrospective method.\n\nKey impacts include:\n• Timing of revenue recognition for certain equipment sales\n• Treatment of installation services\n• Variable consideration estimates",
+      "targetPage": null
+    },
+    {
+      "id": "note-revenue",
+      "marker": "Revenue",
+      "triggerPatterns": ["revenue recognition", "net revenue"],
+      "title": "Revenue Recognition Policy",
+      "preview": "Revenue is recognized when control of goods or services is transferred to the customer...",
+      "fullContent": "Revenue Recognition\n\nThe Company recognizes revenue when control of goods or services is transferred to the customer at an amount that reflects the consideration expected to be received.\n\nRevenue by Segment (FY2017):\n• Semiconductor Systems: $9,824M (68%)\n• Applied Global Services: $3,456M (24%)\n• Display and Adjacent Markets: $1,257M (8%)\n\nRevenue by Geography:\n• Taiwan: 26%\n• China: 22%\n• Korea: 20%\n• Japan: 13%\n• United States: 11%\n• Europe: 8%",
+      "targetPage": 45
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "company": "Applied Materials, Inc.",
+  "ticker": "AMAT",
+  "market": "US",
+  "currency": "USD",
+  "unit": "millions",
+  "stockPrice": 268.00,
+  "incomeStatement": [
+    { "item": "Net Revenue", "FY15": 9659, "FY16": 10825, "FY17": 14537, "FY18": 17253, "FY19": 14608, "FY20": 17202, "FY21": 23063 },
+    { "item": "Cost of Products Sold", "FY15": 6706, "FY16": 6202, "FY17": 8020, "FY18": 9346, "FY19": 8265, "FY20": 9657, "FY21": 12835 },
+    { "item": "Gross Profit", "FY15": 2953, "FY16": 4623, "FY17": 6517, "FY18": 7907, "FY19": 6343, "FY20": 7545, "FY21": 10228 },
+    { "item": "Operating Expenses", "FY15": 1876, "FY16": 1923, "FY17": 2154, "FY18": 2387, "FY19": 2298, "FY20": 2456, "FY21": 2789 },
+    { "item": "Operating Income", "FY15": 1077, "FY16": 2700, "FY17": 4363, "FY18": 5520, "FY19": 4045, "FY20": 5089, "FY21": 7439 },
+    { "item": "Net Income", "FY15": 1377, "FY16": 1721, "FY17": 3434, "FY18": 3313, "FY19": 2706, "FY20": 3619, "FY21": 5888 }
+  ],
+  "documentMapping": {
+    "Net Revenue|FY17": { "page": 45, "section": "income-statement", "highlight": "14,537" },
+    "Net Revenue|FY16": { "page": 45, "section": "income-statement", "highlight": "10,825" },
+    "Net Income|FY17": { "page": 45, "section": "income-statement", "highlight": "3,434" },
+    "Gross Profit|FY17": { "page": 45, "section": "income-statement", "highlight": "6,517" },
+    "Operating Income|FY17": { "page": 45, "section": "income-statement", "highlight": "4,363" }
+  }
+}
