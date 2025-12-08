@@ -36,8 +36,8 @@
   --info: #2196F3;
   
   /* Highlight */
-  --highlight-bg: #FFF3CD;
-  --highlight-border: #FFD93D;
+  --highlight-bg: #FF4444;
+  --highlight-border: #CC0000;
 }
 
 * {
@@ -2148,4 +2148,123 @@ input.hidden {
   .sources-sidebar {
     display: none;
   }
+}
+
+/* ============================================
+   PDF Table Overlay Buttons
+   ============================================ */
+
+.table-overlay {
+  position: absolute;
+  z-index: 100;
+  pointer-events: auto;
+}
+
+.table-overlay-buttons {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--border-default);
+  border-radius: 6px;
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.15s ease;
+}
+
+.table-overlay-buttons.expanded {
+  background: var(--surface-primary);
+}
+
+.table-overlay-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--bamsec-burgundy);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.table-overlay-trigger:hover {
+  background: var(--bamsec-burgundy-dark);
+  transform: scale(1.05);
+}
+
+.table-overlay-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--surface-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.table-overlay-btn:hover {
+  background: var(--bamsec-burgundy-light);
+  color: var(--bamsec-burgundy);
+  border-color: var(--bamsec-burgundy);
+}
+
+.table-overlay-btn-primary {
+  background: var(--bamsec-burgundy);
+  color: white;
+  border-color: var(--bamsec-burgundy);
+}
+
+.table-overlay-btn-primary:hover {
+  background: var(--bamsec-burgundy-dark);
+  color: white;
+}
+
+.table-overlay-export-wrapper {
+  position: relative;
+}
+
+.table-overlay-export-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 120px;
+  background: var(--surface-primary);
+  border: 1px solid var(--border-default);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 4px;
+  z-index: 200;
+  animation: fadeIn 0.15s ease;
+}
+
+.table-overlay-export-menu button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background 0.15s ease;
+  text-align: left;
+}
+
+.table-overlay-export-menu button:hover {
+  background: var(--bamsec-burgundy-light);
+}
+
+.table-overlay-export-menu button svg {
+  color: var(--text-muted);
+  flex-shrink: 0;
 }
