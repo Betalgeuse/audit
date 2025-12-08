@@ -1,9 +1,9 @@
 # PRD: Factset Audit POC - Document Viewer Prototype
 
-**Version:** 1.0  
+**Version:** 1.1  
 **Date:** 2025-12-08  
 **Status:** In Progress  
-**Related Issues:** [QT-46](https://linear.app/betalgeuse/issue/QT-46), [QT-65](https://linear.app/betalgeuse/issue/QT-65)  
+**Related Issues:** [QT-46](https://linear.app/betalgeuse/issue/QT-46), [QT-65](https://linear.app/betalgeuse/issue/QT-65), [QT-69](https://linear.app/betalgeuse/issue/QT-69)  
 **Project Name:** audit
 
 ---
@@ -322,9 +322,456 @@ Korean financial documents have specific annotation patterns:
 
 ---
 
-## 5. Data Specifications
+## 5. AI Question-Answering System (NotebookLLM-Inspired)
 
-### 5.1 US Market (AMAT)
+### 5.1 Problem Statement & Market Context
+
+Financial analysts, auditors, and researchers face significant challenges when working with financial documents:
+
+**Industry Pain Points (Based on Research):**
+
+| Sector | Key Pain Points | Current Tools | Gaps |
+|--------|-----------------|---------------|------|
+| **Law Firms** | Document review time, AI hallucination risk (17-33% per Stanford), legal research accuracy | ChatGPT, Claude, Spellbook, CaseText CoCounsel | Lack of source grounding, citation verification |
+| **Big 4 Audit Firms** | Manual 10-K review, risk assessment, anomaly detection across filings | Deloitte Zora/DARTbot, EY Helix GLAD, KPMG Clara, PwC Omnia | Cross-document comparison, footnote context |
+| **Consulting Firms** | Knowledge retrieval from vast document repositories, expert synthesis | McKinsey Lilli (70% adoption, 30% time savings), BCG GENE (18,000+ GPTs) | Domain-specific financial Q&A |
+| **Financial Analysts** | Year-over-year comparison, footnote tracking, regulatory change tracking | Search10K, V7 Labs 10-K Analyzer (95% faster) | Real-time Q&A within document context |
+
+### 5.2 Solution: Integrated AI Q&A with Document Context
+
+Implement an AI-powered question-answering system inspired by **Google NotebookLLM** that enables users to:
+1. Ask questions about uploaded financial documents
+2. Get source-grounded answers with citations
+3. Expand research beyond attached documents to external sources
+4. Query within footnote popups for instant context
+
+**Key NotebookLLM Features to Emulate:**
+- Multimodal source uploads (PDF, documents, web content)
+- Personalized AI expertise based on uploaded content
+- Citation-grounded responses (no hallucinations)
+- Cross-document synthesis and comparison
+- Audio overview generation (future phase)
+
+### 5.3 AI Q&A Feature Scope
+
+#### 5.3.1 POC Scope (P0)
+
+| Feature | Priority | Description |
+|---------|----------|-------------|
+| **Document Q&A** | P0 | Ask questions about uploaded 10-K/financial statements |
+| **Source Citations** | P0 | Every answer includes page/section references |
+| **Footnote AI Query** | P0 | Ask AI within footnote popup (QT-69 requirement) |
+| **Context Awareness** | P0 | AI understands current document context and user position |
+
+#### 5.3.2 Phase 2 Scope (P1)
+
+| Feature | Priority | Description |
+|---------|----------|-------------|
+| **Cross-Document Q&A** | P1 | Compare across multiple filings (YoY analysis) |
+| **External Research** | P1 | Expand search to SEC database, DART, external sources |
+| **Summarization** | P1 | AI-generated summaries of sections, notes, risk factors |
+| **Prior Year Context** | P1 | Auto-retrieve related footnotes from prior year filings |
+
+#### 5.3.3 Future Phases (Post-POC)
+
+| Feature | Description |
+|---------|-------------|
+| Audio Overviews | NotebookLLM-style podcast generation for documents |
+| Multi-Agent Analysis | LiveAI-style specialized agents for different analysis types |
+| Anomaly Detection | Flag unusual changes in financial statements |
+| Regulatory Tracking | Track accounting standard changes (ASC updates) |
+
+### 5.4 QT-69 Korean Footnote AI Q&A (Detailed Specification)
+
+**Reference:** [QT-69: 재무제표 주석 번호 인라인 팝업 및 AI 질의 기능](https://linear.app/betalgeuse/issue/QT-69)
+
+#### 5.4.1 Problem (Korean Financial Statements)
+
+In Korean 사업보고서/분기보고서 documents:
+- Footnote markers like `(주5, 6)` appear in financial statement text
+- Actual footnote content is **pages away** from the marker
+- Users must manually navigate through dozens of pages to find 주석 content
+- No way to quickly compare current footnote with prior year equivalent
+
+**Example from SK Hynix 분기보고서:**
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ 연결재무제표                                                    │
+├─────────────────────────────────────────────────────────────────┤
+│ 과목          │ 주석    │ 당기(2024) │ 전기(2023) │            │
+├───────────────┼─────────┼────────────┼────────────┤            │
+│ Ⅰ. 매출액    │ (주5,6) │ 44,621,568 │ 42,997,792 │ ← 클릭 시  │
+│ Ⅱ. 매출원가  │ (주28)  │ 28,993,713 │ 24,045,600 │   주석 팝업│
+└─────────────────────────────────────────────────────────────────┘
+        │
+        │ 마우스 호버/클릭
+        ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ 📄 주석 5: 매출액                                               │
+├─────────────────────────────────────────────────────────────────┤
+│ 회사는 한국채택국제회계기준 제1115호에 따라 매출액을           │
+│ 인식합니다. 고객과의 계약에서 발생하는 수익은...               │
+│                                                                 │
+│ ┌─────────────────────────────────────────────────────────────┐ │
+│ │ 🤖 AI에게 질문하기                                          │ │
+│ ├─────────────────────────────────────────────────────────────┤ │
+│ │ 💬 "이 주석 요약해줘"                                       │ │
+│ │ 💬 "작년 동일 주석 수치는?"                                  │ │
+│ │ 💬 "연결/별도 재무제표 비교"                                 │ │
+│ │ [질문 입력...]                              [전송]          │ │
+│ └─────────────────────────────────────────────────────────────┘ │
+│                                                                 │
+│ [📌 고정] [📄 전체 보기] [📋 복사]                              │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+#### 5.4.2 Korean Footnote Recognition Patterns
+
+```typescript
+// QT-69: Auto-detect Korean footnote markers
+const koreanFootnotePatterns = [
+  /\(주\s*(\d+(?:,\s*\d+)*)\)/g,           // (주5, 6), (주 5, 6)
+  /\(주석\s*(\d+(?:,\s*\d+)*)\)/g,         // (주석5), (주석 5, 6)
+  /주석\s*(\d+)/g,                          // 주석 5 (without parentheses)
+  /각주\s*(\d+)/g,                          // 각주 1
+  /\*{1,3}/g,                               // *, **, ***
+  /†|‡|§/g,                                 // †, ‡, §
+  /\(\d+\)/g,                               // (1), (2)
+];
+
+interface KoreanFootnoteReference {
+  id: string;
+  marker: string;              // "(주5, 6)"
+  noteNumbers: number[];       // [5, 6]
+  type: '주석' | '각주' | '부록' | '참조';
+  sourcePosition: {
+    page: number;
+    tableRow?: number;
+    column?: string;
+  };
+  matchedContent: {
+    noteNumber: number;
+    title: string;
+    content: string;
+    targetPage: number;
+  }[];
+}
+```
+
+#### 5.4.3 AI Query Integration in Footnote Popup
+
+```typescript
+// AI Q&A Component within FootnotePopup
+interface FootnoteAIQuery {
+  footnoteId: string;
+  query: string;
+  context: {
+    currentDocument: string;
+    currentFootnote: string;
+    relatedFootnotes?: string[];      // Same footnote from prior years
+    crossDocuments?: string[];        // Consolidated vs. separate statements
+  };
+}
+
+// Pre-built query suggestions for QT-69
+const koreanQuerySuggestions = [
+  { label: "이 주석 요약", query: "이 주석의 핵심 내용을 3줄로 요약해줘" },
+  { label: "작년 동일 수치", query: "전년도 동일 주석의 관련 수치는 얼마였는지?" },
+  { label: "연결/별도 비교", query: "연결재무제표와 별도재무제표의 해당 항목 차이점은?" },
+  { label: "변동 사항", query: "전기 대비 당기의 주요 변동 사항은?" },
+  { label: "회계정책 설명", query: "적용된 회계정책을 쉽게 설명해줘" },
+];
+
+const englishQuerySuggestions = [
+  { label: "Summarize", query: "Summarize this footnote in 3 bullet points" },
+  { label: "Prior Year", query: "What was the same figure in the prior year filing?" },
+  { label: "Compare Periods", query: "Compare this quarter to the same quarter last year" },
+  { label: "Risk Factors", query: "What risks are mentioned in relation to this item?" },
+  { label: "Accounting Policy", query: "Explain the accounting policy applied here" },
+];
+```
+
+### 5.5 RAG Architecture for Financial Document Q&A
+
+Based on extensive research on RAG best practices for financial documents:
+
+#### 5.5.1 Architecture Overview
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    RAG Architecture for Financial Q&A                    │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  ┌───────────────┐    ┌───────────────┐    ┌───────────────────────┐   │
+│  │ Document      │    │ Metadata      │    │ Vector Store          │   │
+│  │ Ingestion     │───▶│ Extraction    │───▶│ (Embeddings)          │   │
+│  │ - PDF Parse   │    │ - Fiscal Year │    │ - Contextual Chunks   │   │
+│  │ - XBRL Parse  │    │ - Section ID  │    │ - Metadata-enriched   │   │
+│  │ - Table OCR   │    │ - Doc Type    │    │                       │   │
+│  └───────────────┘    └───────────────┘    └───────────┬───────────┘   │
+│                                                         │               │
+│  ┌───────────────────────────────────────────────────────────────────┐ │
+│  │                        Query Processing                           │ │
+│  ├───────────────────────────────────────────────────────────────────┤ │
+│  │  User Query ──▶ Pre-Filter ──▶ Semantic Search ──▶ Reranker     │ │
+│  │      │          (metadata)      (vector)           (relevance)   │ │
+│  │      │              │               │                  │         │ │
+│  │      ▼              ▼               ▼                  ▼         │ │
+│  │  "What was    Filter to       Find similar      Rank by         │ │
+│  │   revenue     FY2024          chunks            context fit     │ │
+│  │   in 2024?"   10-K docs                                         │ │
+│  └───────────────────────────────────────────────────────────────────┘ │
+│                                                         │               │
+│                                                         ▼               │
+│  ┌───────────────────────────────────────────────────────────────────┐ │
+│  │                     Response Generation                           │ │
+│  ├───────────────────────────────────────────────────────────────────┤ │
+│  │  Retrieved Context + Query ──▶ LLM ──▶ Grounded Answer           │ │
+│  │                                  │                                │ │
+│  │  "Revenue in FY2024 was $27.2B   ▼                               │ │
+│  │   [Source: 10-K p.45, Note 4]"   Citations auto-attached         │ │
+│  └───────────────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+#### 5.5.2 Key RAG Components
+
+| Component | Implementation | Rationale |
+|-----------|----------------|-----------|
+| **Contextual Chunking** | Chunks include section headers + metadata | Critical for sparse financial data (per arxiv:2510.24402) |
+| **Metadata Tagging** | Fiscal year, company, section, table/text type | Pre-retrieval filtering improves precision |
+| **Domain Embeddings** | Financial-domain fine-tuned embeddings | Better semantic understanding of financial terms |
+| **Reranker** | Post-retrieval relevance scoring | Substantial performance improvement per FinanceBench |
+| **Citation Grounding** | Every response includes source page/section | Prevents hallucination, enables verification |
+
+#### 5.5.3 Document Processing Pipeline
+
+```typescript
+interface DocumentChunk {
+  id: string;
+  content: string;
+  metadata: {
+    documentId: string;
+    documentType: '10-K' | '10-Q' | '8-K' | '사업보고서' | '분기보고서';
+    company: string;
+    fiscalYear: number;
+    fiscalQuarter?: number;
+    section: string;           // "MD&A", "Risk Factors", "Notes", "주석"
+    sectionNumber?: string;    // "Note 4", "주석 5"
+    pageNumber: number;
+    contentType: 'text' | 'table' | 'footnote';
+    language: 'en' | 'ko';
+  };
+  embedding?: number[];        // Vector embedding
+}
+
+interface RAGQuery {
+  query: string;
+  filters?: {
+    company?: string;
+    fiscalYear?: number;
+    documentType?: string;
+    section?: string;
+    language?: 'en' | 'ko';
+  };
+  context?: {
+    currentPage?: number;
+    currentSection?: string;
+    selectedFootnote?: string;
+  };
+  options?: {
+    includePriorYear?: boolean;      // For YoY comparison
+    includeExternalSources?: boolean; // Expand beyond uploaded docs
+    maxResults?: number;
+  };
+}
+
+interface RAGResponse {
+  answer: string;
+  citations: {
+    documentId: string;
+    page: number;
+    section: string;
+    excerpt: string;
+    confidence: number;
+  }[];
+  relatedContent?: {
+    priorYearFootnote?: string;
+    relatedNotes?: string[];
+  };
+}
+```
+
+### 5.6 Cross-Document Research Capability
+
+#### 5.6.1 Year-over-Year Analysis
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  Cross-Document Query: "Compare Note 4 Cash position YoY"          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌─────────────────────┐    ┌─────────────────────┐                │
+│  │ AMAT 10-K FY2024    │    │ AMAT 10-K FY2023    │                │
+│  │ ─────────────────── │    │ ─────────────────── │                │
+│  │ Note 4: Cash        │    │ Note 4: Cash        │                │
+│  │ $5,200M             │◀──▶│ $5,010M             │                │
+│  │ Page 67             │    │ Page 65             │                │
+│  └─────────────────────┘    └─────────────────────┘                │
+│                                                                     │
+│  AI Response:                                                       │
+│  ┌─────────────────────────────────────────────────────────────────┐│
+│  │ Cash and cash equivalents increased by $190M (3.8%) from       ││
+│  │ FY2023 to FY2024.                                               ││
+│  │                                                                 ││
+│  │ Key changes:                                                    ││
+│  │ • Operating cash flow: +$1.2B                                  ││
+│  │ • Capex investment: -$800M                                     ││
+│  │ • Dividend payments: -$210M                                    ││
+│  │                                                                 ││
+│  │ [📄 FY2024 Note 4, p.67] [📄 FY2023 Note 4, p.65]             ││
+│  └─────────────────────────────────────────────────────────────────┘│
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+#### 5.6.2 External Source Integration (P1)
+
+| Source | Integration Method | Use Case |
+|--------|-------------------|----------|
+| **SEC EDGAR** | API for 10-K/10-Q filings | Expand to peer company comparisons |
+| **Korean DART** | DART API for 사업보고서 | Korean regulatory filings |
+| **Accounting Standards** | ASC/IFRS reference database | Explain accounting policy references |
+| **News/Press Releases** | News API integration | Context on material events |
+
+### 5.7 UI Components for AI Q&A
+
+#### 5.7.1 Document-Level AI Assistant
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│ FACTSET | Document Viewer                              [🤖 AI] [X]     │
+├─────────────────────────────────────────────────────────────────────────┤
+│ Entity: APPLIED MATERIALS INC /DE                                       │
+│ Filing Type: 10-K  |  End Date: 2024-10-27                             │
+├───────────────┬─────────────────────────────────────────────────────────┤
+│ [Navigation]  │ [Document Content]                     [AI Panel]      │
+│               │                                        ┌──────────────┐│
+│ Cover         │ Note 4: Cash and Cash Equivalents     │🤖 AI Q&A     ││
+│ Document Info │                                        │              ││
+│               │ The Company considers all highly      │Ask about     ││
+│ Financial     │ liquid investments with original      │this document ││
+│ Statements    │ maturities of three months or less... │              ││
+│  ▸ Income     │                                        │[💬 입력...] ││
+│  ▸ Balance    │ As of October 27, 2024, cash and      │              ││
+│  ▸ Cash Flow  │ cash equivalents totaled $5,200M,     │Recent:       ││
+│               │ of which $4,400M was held by          │• "Summarize" ││
+│ Notes         │ foreign subsidiaries.                 │• "YoY change"││
+│  ▸ Note 4 ◀   │                                        │• "Risks?"   ││
+│  ▸ Note 5     │                                        │              ││
+└───────────────┴─────────────────────────────────────────┴──────────────┘│
+```
+
+#### 5.7.2 Footnote Popup AI Integration (QT-69)
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│  📄 주석 5: 매출액                                                [X] │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  회사는 한국채택국제회계기준 제1115호에 따라 고객과의 계약에서         │
+│  발생하는 수익을 인식합니다. 수익은 고객에게 약속한 재화나 용역을      │
+│  이전하여 수행의무를 이행할 때 인식합니다.                             │
+│                                                                         │
+│  당기 매출액: ₩44,621,568백만원                                        │
+│  전기 매출액: ₩42,997,792백만원                                        │
+│  증감: +₩1,623,776백만원 (+3.8%)                                       │
+│                                                                         │
+├─────────────────────────────────────────────────────────────────────────┤
+│  🤖 AI 질문하기                                                        │
+│  ┌─────────────────────────────────────────────────────────────────┐   │
+│  │ [이 주석 요약] [전년 비교] [회계정책 설명] [연결/별도 비교]    │   │
+│  │                                                                 │   │
+│  │ [질문을 입력하세요...]                            [전송 ▶]    │   │
+│  └─────────────────────────────────────────────────────────────────┘   │
+│                                                                         │
+│  [📌 고정] [📄 전체 주석 보기] [📋 복사]                               │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### 5.8 Technical Implementation
+
+#### 5.8.1 Component Architecture
+
+```
+src/components/AISystem/
+├── AIProvider.tsx              # Context for AI state management
+├── AIPanel.tsx                 # Side panel for document-level Q&A
+├── AIQueryInput.tsx            # Query input with suggestions
+├── AIResponse.tsx              # Response display with citations
+├── CitationLink.tsx            # Clickable citation references
+├── QuerySuggestions.tsx        # Pre-built query buttons
+├── FootnoteAIQuery.tsx         # AI Q&A within footnote popup (QT-69)
+├── CrossDocumentQuery.tsx      # YoY comparison queries
+└── hooks/
+    ├── useRAGQuery.ts          # RAG query execution
+    ├── useDocumentContext.ts   # Current document/position context
+    ├── useCitationNavigation.ts # Navigate to cited sections
+    └── useQueryHistory.ts      # Track user's Q&A history
+```
+
+#### 5.8.2 API Integration Points
+
+```typescript
+// AI Q&A API endpoints (future backend)
+interface AIAPIEndpoints {
+  // Document Q&A
+  queryDocument: '/api/ai/query';           // POST: RAG query
+  getQuerySuggestions: '/api/ai/suggestions'; // GET: Context-aware suggestions
+  
+  // Cross-document
+  compareDocuments: '/api/ai/compare';      // POST: YoY/peer comparison
+  
+  // External research (P1)
+  searchExternal: '/api/ai/external';       // POST: SEC/DART search
+  
+  // Streaming response
+  streamResponse: '/api/ai/stream';         // WebSocket: Real-time response
+}
+
+// POC: Mock AI responses for demonstration
+const mockAIResponses: Record<string, RAGResponse> = {
+  "summarize-note-4": {
+    answer: "Note 4 covers cash and cash equivalents...",
+    citations: [{ documentId: "AMAT_10K_2024", page: 67, section: "Note 4", excerpt: "...", confidence: 0.95 }]
+  },
+  // Additional mock responses for demo
+};
+```
+
+### 5.9 Performance & Quality Targets
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| Query Response Time | < 2s (simple), < 5s (cross-doc) | Time to first response token |
+| Citation Accuracy | > 95% | Cited sections contain relevant info |
+| Hallucination Rate | < 5% | Claims without source support |
+| User Satisfaction | > 4.0/5.0 | Post-query feedback rating |
+| Korean Query Support | 100% parity | Same features for EN/KO |
+
+### 5.10 Security & Privacy Considerations
+
+| Concern | Mitigation |
+|---------|------------|
+| Document Confidentiality | All processing in secure environment; no data retention post-session |
+| LLM Data Privacy | Use enterprise LLM endpoints (Azure OpenAI, Bedrock) with data protection |
+| Citation Verification | Every claim linked to source; users can verify |
+| Audit Trail | Log all queries for compliance (optional) |
+
+---
+
+## 6. Data Specifications
+
+### 6.1 US Market (AMAT)
 
 **Company:** Applied Materials, Inc.  
 **Ticker:** AMAT  
@@ -342,7 +789,7 @@ Korean financial documents have specific annotation patterns:
 **Document Viewer Highlight:**
 - Balance Sheet: Cash and cash equivalents **$5,010M** (Oct 2017)
 
-### 5.2 KR Market (SK Hynix)
+### 6.2 KR Market (SK Hynix)
 
 **Company:** SK Hynix Inc.  
 **Document:** ?�결감사보고??(Consolidated Audit Report)
@@ -360,9 +807,9 @@ Korean financial documents have specific annotation patterns:
 
 ---
 
-## 6. Technical Architecture
+## 7. Technical Architecture
 
-### 6.1 Tech Stack
+### 7.1 Tech Stack
 
 | Layer | Technology | Rationale |
 |-------|------------|-----------|
@@ -372,7 +819,7 @@ Korean financial documents have specific annotation patterns:
 | State Management | React useState/Context | Lightweight, POC-appropriate |
 | Language | TypeScript | Type safety, better DX |
 
-### 6.2 Component Structure
+### 7.2 Component Structure
 
 ```
 src/
@@ -417,16 +864,16 @@ src/
     ?��??� footnotes.ts                  # NEW: Footnote type definitions
 ```
 
-### 6.3 Data Flow
+### 7.3 Data Flow
 
 ```
 ?��??�?�?�?�?�?�?�?�?�?�?�?�??   Click Cell    ?��??�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�????Landing     ???�?�?�?�?�?�?�?�?�?�?�?�?�?�?�????Document Viewer  ????Page        ??                 ??Modal            ???��??�?�?�?�?�?�?�?�?�?�?�?�??                 ?��??�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�??      ??                                  ??      ??                                  ??      ??                                  ???��??�?�?�?�?�?�?�?�?�?�?�?�??                 ?��??�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�????Financial   ??                 ??PDF Iframe/      ????Data JSON   ??                 ??React-PDF        ???��??�?�?�?�?�?�?�?�?�?�?�?�??                 ?��??�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�??      ??                                  ??      ?��??�?�?�?�?�?�?�?�?�?�?�?�?�?�?��??�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�??                      ??                      ??              ?��??�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�??              ??Document Mapping ??              ??(cell ??section) ??              ?��??�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�??```
 
 ---
 
-## 7. UI/UX Specifications
+## 8. UI/UX Specifications
 
-### 7.1 Landing Page Table
+### 8.1 Landing Page Table
 
 **Hover State:**
 ```css
@@ -440,7 +887,7 @@ src/
 }
 ```
 
-### 7.2 Document Viewer Modal
+### 8.2 Document Viewer Modal
 
 **Dimensions:**
 - Width: 90vw (max 1400px)
@@ -462,7 +909,7 @@ src/
 }
 ```
 
-### 7.3 Responsive Behavior
+### 8.3 Responsive Behavior
 
 | Breakpoint | Behavior |
 |------------|----------|
@@ -472,9 +919,9 @@ src/
 
 ---
 
-## 8. Interaction Specifications
+## 9. Interaction Specifications
 
-### 8.1 Cell Click Flow
+### 9.1 Cell Click Flow
 
 1. **Hover** (0ms)
    - Background color change
@@ -494,7 +941,7 @@ src/
    - Auto-scroll to target section
    - Highlight animation plays
 
-### 8.2 Close Behaviors
+### 9.2 Close Behaviors
 
 | Trigger | Action |
 |---------|--------|
@@ -505,16 +952,16 @@ src/
 
 ---
 
-## 9. Assets Required
+## 10. Assets Required
 
-### 9.1 PDF Documents
+### 10.1 PDF Documents
 
 | Document | Market | Status | Location |
 |----------|--------|--------|----------|
 | AMAT 10-K | US | ??Available | `assets/pdfs/AMAT_10K.pdf` |
 | SK Hynix 감사보고??| KR | ??Available | `assets/pdfs/SK_Hynix_10K.pdf` |
 
-### 9.2 Screen Recordings (Reference)
+### 10.2 Screen Recordings (Reference)
 
 | Recording | Purpose | Status | Location |
 |-----------|---------|--------|----------|
@@ -523,9 +970,9 @@ src/
 
 ---
 
-## 10. Success Criteria
+## 11. Success Criteria
 
-### 10.1 Functional Requirements
+### 11.1 Functional Requirements
 
 **Core Document Viewer:**
 - [ ] User can view financial data table on landing page
@@ -549,7 +996,16 @@ src/
 - [ ] Multiple footnotes can be viewed sequentially without losing place
 - [ ] Korean documents (주석, 각주) work identically to English
 
-### 10.2 Performance Targets
+**AI Q&A System (QT-69):**
+- [ ] User can ask questions about the current document
+- [ ] AI responses include source citations (page, section)
+- [ ] AI Q&A available within footnote popup
+- [ ] Pre-built query suggestions displayed (EN/KO)
+- [ ] Korean footnote markers auto-detected: (주5, 6), (주석5), etc.
+- [ ] Response time < 2s for simple queries
+- [ ] Citations are clickable and navigate to source
+
+### 11.2 Performance Targets
 
 | Metric | Target |
 |--------|--------|
@@ -561,10 +1017,13 @@ src/
 | Hover-to-Popup Delay | 300ms (intentional) |
 | Cross-Reference Preview Load | < 200ms |
 | Pin/Unpin Action | Instant (< 16ms) |
+| AI Query Response | < 2s (simple), < 5s (cross-doc) |
+| AI Citation Accuracy | > 95% |
+| AI Hallucination Rate | < 5% |
 
 ---
 
-## 11. Future Roadmap (Post-POC)
+## 12. Future Roadmap (Post-POC)
 
 ### Phase 2: Enhanced Document Intelligence
 - Precise number-to-location mapping
@@ -586,14 +1045,15 @@ src/
 
 ---
 
-## 12. Appendix
+## 13. Appendix
 
 ### A. Related Linear Issues
 
 | Issue | Title | Status |
 |-------|-------|--------|
-| [QT-46](https://linear.app/betalgeuse/issue/QT-46) | Factset 목업 ?�면 ?�화?� PDF ?�료 ?�청 | In Progress |
+| [QT-46](https://linear.app/betalgeuse/issue/QT-46) | Factset 목업 화면 전화용 PDF 자료 요청 | In Progress |
 | [QT-65](https://linear.app/betalgeuse/issue/QT-65) | Create new PRD for Factset audit POC | In Progress |
+| [QT-69](https://linear.app/betalgeuse/issue/QT-69) | 재무제표 주석 번호 인라인 팝업 및 AI 질의 기능 | In Progress |
 
 ### B. Reference Materials
 
@@ -639,11 +1099,64 @@ The inline footnote popup system is based on extensive research from:
 
 | Feature | Factset Current | Bloomberg | Our POC |
 |---------|-----------------|-----------|---------|
-| Footnote Hover | ❌ | ❌ | ✅ |
-| Cross-Reference Preview | ❌ | ❌ | ✅ |
-| Pinned Sidenotes | ❌ | ❌ | ✅ |
-| Source Provenance | Partial | Partial | ✅ Full |
-| Multi-language (KR/EN) | ✅ | ✅ | ✅ |
+| Footnote Hover | X | X | O |
+| Cross-Reference Preview | X | X | O |
+| Pinned Sidenotes | X | X | O |
+| Source Provenance | Partial | Partial | O Full |
+| Multi-language (KR/EN) | O | O | O |
+| AI Document Q&A | X | X | O |
+| Citation-Grounded Responses | X | X | O |
+| Cross-Document YoY Analysis | Partial | Partial | O (P1) |
+
+### F. AI Q&A System Research Sources
+
+**AI Document Q&A Platforms:**
+- **Google NotebookLLM**: Multimodal source uploads (500k words/source), personalized AI expertise, audio overviews, citation-grounded responses, 80+ language support
+- **McKinsey Lilli**: 100k+ document repository, 4M+ prompts, 70% employee adoption, 30% time savings on research tasks
+- **BCG GENE**: GPT-4o based, 18,000+ custom GPTs, 20% of BCG revenue from AI services
+
+**Big 4 Audit Firm AI Tools:**
+- **Deloitte Zora AI**: Autonomous task execution, document uploads for tax returns, financial statement analysis
+- **Deloitte DARTbot**: GPT-4 powered accounting standards Q&A, natural language queries
+- **EY Helix GLAD**: General Ledger Anomaly Detection, supervised/unsupervised ML combination
+- **EY Atlas AI**: Unstructured data analysis, $2.1B fraud identified through AI-driven audits
+- **KPMG Clara**: GenAI integration for 90,000 auditors, AI-assisted risk assessments, voice-to-text, contract analyzer
+- **PwC Omnia**: Real-time risk assessment, audit documentation enhancement
+
+**RAG Architecture Research:**
+- **arxiv:2510.24402 "Metadata-Driven RAG for Financial Q&A"**: Multi-stage architecture, contextual chunking, metadata-enriched embeddings, FinanceBench evaluation
+- **arxiv:2504.14493 "FinSage: Multi-aspect RAG for Financial Filings"**: Heterogeneous data handling, domain-specific adaptation
+- **Humanloop RAG Architectures Guide**: Simple RAG, RAG with Memory, production patterns
+- **AWS RAG Guide**: Authoritative knowledge base integration, response validation
+
+**Financial Document Analysis Tools:**
+- **Search10K**: 5-second SEC filing queries, sentiment analysis, theme tracking
+- **V7 Labs 10-K Analyzer**: 95% faster review (2-4 hours to 5 minutes), YoY change detection, MD&A summarization
+- **LiveAI SEC Filings**: Multi-agent financial document analyzer, dynamic RAG pipeline
+- **Captide Financial Filings API**: LLM-optimized document chunks, semantic search
+
+**Korean Financial Data Systems:**
+- **DART (Data Analysis, Retrieval, Transfer System)**: Korean electronic disclosure system, XBRL format support
+- **Korean FSS XBRL Guide (2025)**: 재무제표 본문/주석 작성 가이드, enhanced annotation requirements
+- **DART API**: Programmatic access to 사업보고서/분기보고서, XBRL data parsing
+
+**Law Firm AI Adoption:**
+- 54%+ of attorneys cite efficiency as key AI benefit (Thomson Reuters)
+- AI hallucination rates 17-33% in legal contexts (Stanford study) - emphasis on citation grounding
+- Tools: ChatGPT, Claude, Spellbook (contracts), CaseText CoCounsel (legal research)
+
+### G. Glossary
+
+| Term | Definition |
+|------|------------|
+| RAG | Retrieval-Augmented Generation - AI architecture combining search with LLM generation |
+| Contextual Chunking | Document segmentation preserving section context and metadata |
+| Citation Grounding | Linking AI responses to specific source locations |
+| DART | Korean electronic disclosure system (Data Analysis, Retrieval, Transfer System) |
+| XBRL | eXtensible Business Reporting Language for structured financial data |
+| 주석/주석 | Korean for "footnote/note" in financial statements |
+| 사업보고서 | Korean Annual Business Report |
+| 분기보고서 | Korean Quarterly Report |
 
 ---
 
