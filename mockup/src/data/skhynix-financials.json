@@ -6,17 +6,25 @@
   "unit": "백만원",
   "stockPrice": 178500,
   "incomeStatement": [
-    { "item": "I. 매출액", "주석": "(주5,6)", "제5기": 44621568, "제4기": 42997792, "제3기": 36325544, "제2기": 26881464 },
-    { "item": "II. 매출원가", "주석": "(주28,33)", "제5기": 28993713, "제4기": 24045600, "제3기": 22876543, "제2기": 18234567 },
-    { "item": "III. 매출총이익", "주석": "", "제5기": 15627855, "제4기": 18952192, "제3기": 13449001, "제2기": 8646897 },
-    { "item": "IV. 판매비와관리비", "주석": "(주29,30)", "제5기": 4532187, "제4기": 4123456, "제3기": 3876543, "제2기": 3234567 },
-    { "item": "V. 영업이익", "주석": "", "제5기": 11095668, "제4기": 14828736, "제3기": 9572458, "제2기": 5412330 },
-    { "item": "VI. 당기순이익", "주석": "", "제5기": 8234567, "제4기": 12345678, "제3기": 7654321, "제2기": 4321098 }
+    { "item": "I. 매출액", "주석": "(주4,26)", "제75기": 44621568, "제74기": 42997792 },
+    { "item": "II. 매출원가", "주석": "(주28)", "제75기": 28993713, "제74기": 24045600 },
+    { "item": "III. 매출총이익", "주석": "", "제75기": 15627855, "제74기": 18952192 },
+    { "item": "IV. 판매비와관리비", "주석": "(주27,28)", "제75기": 8818438, "제74기": 6541852 },
+    { "item": "V. 영업이익", "주석": "", "제75기": 6809417, "제74기": 12410340 },
+    { "item": "VI. 당기순이익", "주석": "", "제75기": 2241669, "제74기": 9616188 }
   ],
   "documentMapping": {
-    "I. 매출액|제4기": { "page": 12, "section": "consolidated-income", "highlight": "42,997,792" },
-    "I. 매출액|제5기": { "page": 12, "section": "consolidated-income", "highlight": "44,621,568" },
-    "V. 영업이익|제4기": { "page": 12, "section": "consolidated-income", "highlight": "14,828,736" },
-    "VI. 당기순이익|제4기": { "page": 12, "section": "consolidated-income", "highlight": "12,345,678" }
+    "I. 매출액|제75기": { "page": 5, "section": "consolidated-income", "highlight": "44,621,568" },
+    "I. 매출액|제74기": { "page": 5, "section": "consolidated-income", "highlight": "42,997,792" },
+    "II. 매출원가|제75기": { "page": 5, "section": "consolidated-income", "highlight": "28,993,713" },
+    "II. 매출원가|제74기": { "page": 5, "section": "consolidated-income", "highlight": "24,045,600" },
+    "III. 매출총이익|제75기": { "page": 5, "section": "consolidated-income", "highlight": "15,627,855" },
+    "III. 매출총이익|제74기": { "page": 5, "section": "consolidated-income", "highlight": "18,952,192" },
+    "IV. 판매비와관리비|제75기": { "page": 5, "section": "consolidated-income", "highlight": "8,818,438" },
+    "IV. 판매비와관리비|제74기": { "page": 5, "section": "consolidated-income", "highlight": "6,541,852" },
+    "V. 영업이익|제75기": { "page": 5, "section": "consolidated-income", "highlight": "6,809,417" },
+    "V. 영업이익|제74기": { "page": 5, "section": "consolidated-income", "highlight": "12,410,340" },
+    "VI. 당기순이익|제75기": { "page": 5, "section": "consolidated-income", "highlight": "2,241,669" },
+    "VI. 당기순이익|제74기": { "page": 5, "section": "consolidated-income", "highlight": "9,616,188" }
   }
 }

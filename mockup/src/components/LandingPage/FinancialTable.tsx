@@ -20,8 +20,8 @@ export function FinancialTable({
   findFootnote,
 }: FinancialTableProps) {
   const periods = market === 'US' 
-    ? ['FY15', 'FY16', 'FY17', 'FY18', 'FY19', 'FY20', 'FY21']
-    : ['제2기', '제3기', '제4기', '제5기'];
+    ? ['FY15', 'FY16', 'FY17']
+    : ['제74기', '제75기'];
 
   const formatNumber = (value: number | string | undefined): string => {
     if (value === undefined) return '-';
