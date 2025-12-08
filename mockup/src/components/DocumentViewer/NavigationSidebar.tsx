@@ -45,7 +45,7 @@ export function NavigationSidebar({
       <div key={section.id}>
         <div
           className={`nav-section ${isActive ? 'active' : ''} ${
-            isNearPage && !isActive ? 'bg-blue-50' : ''
+            isNearPage && !isActive ? 'bg-burgundy-light' : ''
           }`}
           style={{ paddingLeft: `${16 + depth * 16}px` }}
           onClick={() => hasChildren && toggleSection(section.id)}
@@ -53,19 +53,23 @@ export function NavigationSidebar({
           <div className="flex items-center justify-between">
             <span className="flex items-center gap-2">
               {hasChildren && (
-                <span
-                  className={`text-xs transition-transform ${
-                    isExpanded ? 'rotate-90' : ''
-                  }`}
+                <svg 
+                  width="10" 
+                  height="10" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2"
+                  className={`transition-transform duration-150 ${isExpanded ? 'rotate-90' : ''}`}
                 >
-                  ▶
-                </span>
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
               )}
               <span className={hasChildren ? 'font-medium' : ''}>
                 {section.title}
               </span>
             </span>
-            <span className="text-xs text-gray-400">p.{section.page}</span>
+            <span className="text-2xs font-mono text-text-muted">p.{section.page}</span>
           </div>
         </div>
         {hasChildren && isExpanded && (
@@ -81,19 +85,24 @@ export function NavigationSidebar({
 
   return (
     <div className="nav-sidebar">
-      <div className="px-4 pb-4 border-b">
-        <h3 className="font-semibold text-gray-900 text-sm">{title}</h3>
-        <p className="text-xs text-gray-500 mt-1">
-          {market === 'US' ? 'Table of Contents' : '목차'}
-        </p>
+      {/* Header */}
+      <div className="nav-sidebar-header">
+        <h3>{title}</h3>
+        <p>{market === 'US' ? 'Table of Contents' : '목차'}</p>
       </div>
-      <div className="py-2">
+      
+      {/* Sections */}
+      <div className="flex-1 overflow-y-auto py-2">
         {sections.map((section) => renderSection(section as DocumentSection))}
       </div>
-      <div className="px-4 py-3 border-t bg-gray-50">
-        <div className="text-xs text-gray-500">
-          {market === 'US' ? 'Current Page:' : '현재 페이지:'}{' '}
-          <span className="font-medium text-gray-900">{currentPage}</span>
+      
+      {/* Footer */}
+      <div className="px-4 py-3 border-t border-border bg-surface-secondary">
+        <div className="flex items-center justify-between text-xs">
+          <span className="text-text-muted">
+            {market === 'US' ? 'Current Page' : '현재 페이지'}
+          </span>
+          <span className="font-mono font-medium text-primary">{currentPage}</span>
         </div>
       </div>
     </div>

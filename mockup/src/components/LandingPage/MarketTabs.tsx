@@ -12,30 +12,30 @@ export function MarketTabs({ market, onMarketChange }: MarketTabsProps) {
     <div className="flex gap-2">
       <button
         onClick={() => onMarketChange('US')}
-        className={`px-6 py-3 rounded-lg font-medium transition-all ${
+        className={`px-5 py-2.5 rounded-md font-medium text-sm transition-all duration-150 ${
           market === 'US'
-            ? 'bg-blue-600 text-white shadow-md'
-            : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+            ? 'bg-primary text-white shadow-sm'
+            : 'bg-surface text-text-secondary hover:bg-primary-light hover:text-primary border border-border'
         }`}
       >
         <span className="flex items-center gap-2">
-          <span className="text-lg">🇺🇸</span>
+          <span>🇺🇸</span>
           <span>US Market</span>
-          <span className="text-xs opacity-75">(AMAT)</span>
+          <span className="text-xs opacity-70">(AMAT)</span>
         </span>
       </button>
       <button
         onClick={() => onMarketChange('KR')}
-        className={`px-6 py-3 rounded-lg font-medium transition-all ${
+        className={`px-5 py-2.5 rounded-md font-medium text-sm transition-all duration-150 ${
           market === 'KR'
-            ? 'bg-blue-600 text-white shadow-md'
-            : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+            ? 'bg-primary text-white shadow-sm'
+            : 'bg-surface text-text-secondary hover:bg-primary-light hover:text-primary border border-border'
         }`}
       >
         <span className="flex items-center gap-2">
-          <span className="text-lg">🇰🇷</span>
+          <span>🇰🇷</span>
           <span>한국 시장</span>
-          <span className="text-xs opacity-75">(SK하이닉스)</span>
+          <span className="text-xs opacity-70">(SK하이닉스)</span>
         </span>
       </button>
     </div>

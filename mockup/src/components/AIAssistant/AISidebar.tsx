@@ -130,14 +130,14 @@ export function AISidebar({
         </p>
       </div>
 
-      {/* Context Banner */}
-      <div className="px-4 py-3 bg-blue-50 border-b text-sm">
-        <div className="text-blue-800 font-medium">
-          {market === 'US' ? 'Current Context:' : '현재 위치:'}
+      {/* Context Banner - BamSEC Style */}
+      <div className="ai-context-banner">
+        <div className="ai-context-label">
+          {market === 'US' ? 'Current Context' : '현재 위치'}
         </div>
-        <div className="text-blue-600 text-xs mt-1">
+        <div className="ai-context-value">
           {market === 'US' ? 'Page' : '페이지'} {currentContext.page}
-          {currentContext.section && ` • ${currentContext.section}`}
+          {currentContext.section && ` · ${currentContext.section}`}
         </div>
       </div>
 
@@ -163,7 +163,7 @@ export function AISidebar({
               className="ai-message-content"
               dangerouslySetInnerHTML={renderMarkdown(msg.content)}
             />
-            <div className="text-xs text-gray-400 mt-1">
+            <div className="ai-message-timestamp">
               {msg.timestamp.toLocaleTimeString()}
             </div>
           </div>
@@ -183,10 +183,10 @@ export function AISidebar({
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Suggestions */}
-      <div className="px-4 py-3 border-t bg-gray-50">
-        <div className="text-xs text-gray-500 mb-2">
-          {market === 'US' ? 'Quick actions:' : '빠른 질문:'}
+      {/* Suggestions - BamSEC Style */}
+      <div className="ai-suggestions-container">
+        <div className="ai-suggestions-label">
+          {market === 'US' ? 'Quick Actions' : '빠른 질문'}
         </div>
         <div className="ai-suggestions">
           {suggestions.map((s, idx) => (

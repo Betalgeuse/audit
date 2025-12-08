@@ -21,20 +21,24 @@ export function PDFViewer({
 
   const totalPages = market === 'US' ? 120 : 95;
   const documentTitle = market === 'US' 
-    ? 'AMAT 10-K FY2017' 
-    : 'SK하이닉스 분기보고서 2024.11';
+    ? 'AMAT 10-K FY2024' 
+    : 'SK하이닉스 사업보고서 2024';
 
   return (
     <div className="pdf-viewer">
-      {/* Toolbar */}
+      {/* Toolbar - BamSEC Style */}
       <div className="pdf-toolbar">
         <div className="flex items-center gap-4">
           <button
             onClick={onClose}
-            className="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-sm"
+            className="pdf-toolbar-btn flex items-center gap-2"
           >
-            ← {market === 'US' ? 'Back' : '뒤로'}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            {market === 'US' ? 'Back' : '뒤로'}
           </button>
+          <div className="h-5 w-px bg-white/20" />
           <span className="text-sm font-medium">{documentTitle}</span>
         </div>
 
@@ -44,36 +48,48 @@ export function PDFViewer({
             <button
               onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
               disabled={currentPage <= 1}
-              className="px-2 py-1 bg-gray-700 hover:bg-gray-600 disabled:opacity-50 rounded"
+              className="pdf-toolbar-btn px-2"
             >
-              ◀
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
             </button>
-            <span className="text-sm">
-              {market === 'US' ? 'Page' : '페이지'} {currentPage} / {totalPages}
+            <span className="text-sm font-mono min-w-[80px] text-center">
+              {currentPage} / {totalPages}
             </span>
             <button
               onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
               disabled={currentPage >= totalPages}
-              className="px-2 py-1 bg-gray-700 hover:bg-gray-600 disabled:opacity-50 rounded"
+              className="pdf-toolbar-btn px-2"
             >
-              ▶
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
             </button>
           </div>
+
+          <div className="h-5 w-px bg-white/20" />
 
           {/* Zoom Controls */}
           <div className="flex items-center gap-2">
             <button
               onClick={() => setZoom(Math.max(50, zoom - 25))}
-              className="px-2 py-1 bg-gray-700 hover:bg-gray-600 rounded"
+              className="pdf-toolbar-btn px-2"
             >
-              −
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35M8 11h6" />
+              </svg>
             </button>
-            <span className="text-sm w-16 text-center">{zoom}%</span>
+            <span className="text-sm font-mono w-14 text-center">{zoom}%</span>
             <button
               onClick={() => setZoom(Math.min(200, zoom + 25))}
-              className="px-2 py-1 bg-gray-700 hover:bg-gray-600 rounded"
+              className="pdf-toolbar-btn px-2"
             >
-              +
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" />
+              </svg>
             </button>
           </div>
         </div>

@@ -118,22 +118,33 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <h1 className="text-2xl font-bold text-gray-900">
-                Factset Audit POC
+    <main className="min-h-screen bg-surface-secondary">
+      {/* Header - BamSEC Style */}
+      <header className="bamsec-header">
+        <div className="header-main">
+          <div className="header-logo">
+            <div className="flex items-center gap-3">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                <rect width="24" height="24" rx="4" fill="white" fillOpacity="0.15" />
+                <path d="M6 8h12M6 12h12M6 16h8" stroke="white" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+              <h1>
+                <span className="text-white">Audit</span>
+                <span className="text-white/60 font-normal ml-1">POC</span>
               </h1>
-              <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
-                Mock-up
-              </span>
             </div>
-            <div className="text-sm text-gray-500">
-              Interactive Financial Document Viewer
+          </div>
+          <div className="header-search">
+            <div className="search-wrapper">
+              <svg className="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
+              </svg>
+              <input type="text" placeholder="Search companies, filings, or documents..." />
             </div>
+          </div>
+          <div className="header-actions">
+            <button>Help Center</button>
           </div>
         </div>
       </header>
@@ -143,29 +154,35 @@ export default function Home() {
         <MarketTabs market={market} onMarketChange={setMarket} />
       </div>
 
-      {/* Company Info */}
-      <div className="max-w-7xl mx-auto px-6 pb-4">
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-xl font-semibold text-gray-900">
-                {financials.company}
-              </h2>
-              <p className="text-gray-500">
-                {financials.ticker} | {financials.currency} ({financials.unit})
-              </p>
+      {/* Company Bar - BamSEC Style */}
+      <div className="company-bar">
+        <div className="company-bar-left">
+          <h2 className="company-bar-name">{financials.company}</h2>
+          <span className="company-bar-ticker">
+            {financials.ticker} · {financials.currency} ({financials.unit})
+          </span>
+          {financials.stockPrice && (
+            <div className="company-bar-price">
+              <span className="price-value">
+                {market === 'US' ? '$' : '₩'}{financials.stockPrice.toLocaleString()}
+              </span>
+              <span className="price-change positive">+2.34%</span>
             </div>
-            {financials.stockPrice && (
-              <div className="text-right">
-                <div className="text-2xl font-bold text-gray-900">
-                  {market === 'US' ? '$' : '₩'}
-                  {financials.stockPrice.toLocaleString()}
-                </div>
-                <div className="text-sm text-gray-500">Current Price</div>
-              </div>
-            )}
-          </div>
+          )}
+        </div>
+        <div className="company-bar-right">
+          <button className="watch-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+            </svg>
+            Watch
+          </button>
+        </div>
+      </div>
 
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-6 py-6">
+        <div className="bg-surface rounded-lg shadow-card border border-border p-6">
           {/* Financial Table */}
           <FinancialTable
             data={financials}
@@ -176,10 +193,10 @@ export default function Home() {
             findFootnote={findFootnote}
           />
 
-          {/* Instructions */}
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-            <h4 className="font-medium text-blue-900 mb-2">How to use:</h4>
-            <ul className="text-sm text-blue-800 space-y-1">
+          {/* Instructions - BamSEC Style */}
+          <div className="mt-6 p-4 bg-bamsec-burgundy-light rounded-lg border border-bamsec-burgundy/20">
+            <h4 className="font-medium text-bamsec-burgundy mb-2">How to use:</h4>
+            <ul className="text-sm text-text-secondary space-y-1">
               <li>• <strong>Click any number</strong> to open the document viewer at that location</li>
               <li>• <strong>Hover over {market === 'KR' ? '주석 markers like (주5,6)' : 'footnote markers'}</strong> to see footnote preview</li>
               <li>• <strong>Use the AI assistant</strong> in the document viewer to ask questions</li>

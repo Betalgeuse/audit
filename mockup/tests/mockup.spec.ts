@@ -196,7 +196,9 @@ test.describe('Factset Audit POC Mock-up', () => {
     test('should display collapsible TOC sections', async ({ page }) => {
       await page.click('td.clickable >> nth=0');
       
-      await expect(page.locator('.nav-section')).toHaveCount.greaterThan(3);
+      const navSections = page.locator('.nav-section');
+      const count = await navSections.count();
+      expect(count).toBeGreaterThan(3);
     });
 
     test('should show page numbers in TOC', async ({ page }) => {
