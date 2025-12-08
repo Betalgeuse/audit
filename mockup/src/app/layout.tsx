@@ -1,8 +1,14 @@
 import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
 import './globals.css'
 
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+})
+
 export const metadata: Metadata = {
-  title: 'Factset Audit POC - Financial Document Viewer',
+  title: 'Audit Document Analyzer - Financial Document Viewer',
   description: 'Interactive financial document viewer with AI-powered Q&A',
 }
 
@@ -12,8 +18,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>{children}</body>
     </html>
   )
 }

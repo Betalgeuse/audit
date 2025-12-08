@@ -1,6 +1,6 @@
 'use client';
 
-import { ViewerState, Market, AIMessage } from '@/types';
+import { ViewerState, Market, AIMessage, SourceReference } from '@/types';
 import { NavigationSidebar } from './NavigationSidebar';
 import { PDFViewer } from './PDFViewer';
 import { ExhibitsSidebar } from './ExhibitsSidebar';
@@ -12,6 +12,7 @@ interface DocumentViewerProps {
   onClose: () => void;
   aiMessages: AIMessage[];
   setAiMessages: React.Dispatch<React.SetStateAction<AIMessage[]>>;
+  onSourceClick?: (ref: SourceReference) => void;
 }
 
 const COMPANY_INFO = {
@@ -33,6 +34,7 @@ export function DocumentViewer({
   onClose,
   aiMessages,
   setAiMessages,
+  onSourceClick,
 }: DocumentViewerProps) {
   const companyInfo = COMPANY_INFO[market];
 
@@ -72,6 +74,7 @@ export function DocumentViewer({
             section: viewerState.targetSection,
             highlight: viewerState.highlightText,
           }}
+          onSourceClick={onSourceClick}
         />
       </div>
     </div>

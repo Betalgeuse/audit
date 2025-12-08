@@ -72,3 +72,35 @@ export interface AIMessage {
   content: string;
   timestamp: Date;
 }
+
+export type DocumentType = 'pdf' | 'xbrl' | 'excel' | 'word' | 'hwp';
+
+export interface SourceReference {
+  page: number;
+  section?: string;
+  label: string;
+}
+
+export interface SourceDocument {
+  id: string;
+  name: string;
+  type: DocumentType;
+  path: string;
+  market: Market;
+  size?: string;
+  uploadedAt?: Date;
+}
+
+export type ExportFormat = 'excel' | 'csv' | 'image' | 'pdf';
+
+export interface SimilarTable {
+  id: string;
+  filingType: string;
+  period: string;
+  endDate: string;
+  filedDate: string;
+  data: {
+    item: string;
+    values: (number | string)[];
+  }[];
+}
