@@ -29,6 +29,7 @@ interface PDFViewerProps {
   targetPage: number;
   highlightText: string;
   onClose: () => void;
+  onDiscussWithAI?: (text: string, page: number) => void;
 }
 
 export function PDFViewer({
@@ -36,6 +37,7 @@ export function PDFViewer({
   targetPage,
   highlightText,
   onClose,
+  onDiscussWithAI,
 }: PDFViewerProps) {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -73,6 +75,7 @@ export function PDFViewer({
       targetPage={targetPage}
       highlightText={highlightText}
       onClose={onClose}
+      onDiscussWithAI={onDiscussWithAI}
     />
   );
 }

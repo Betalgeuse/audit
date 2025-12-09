@@ -1,6 +1,7 @@
 'use client';
 
-import { ViewerState, Market, AIMessage } from '@/types';
+import { useState } from 'react';
+import { ViewerState, Market, AIMessage, SourceReference, SelectedTextContext } from '@/types';
 import { NavigationSidebar } from './NavigationSidebar';
 import { PDFViewer } from './PDFViewer';
 import { ExhibitsSidebar } from './ExhibitsSidebar';
@@ -12,6 +13,7 @@ interface DocumentViewerProps {
   onClose: () => void;
   aiMessages: AIMessage[];
   setAiMessages: React.Dispatch<React.SetStateAction<AIMessage[]>>;
+  onSourceClick?: (ref: SourceReference) => void;
 }
 
 const COMPANY_INFO = {
@@ -33,8 +35,18 @@ export function DocumentViewer({
   onClose,
   aiMessages,
   setAiMessages,
+  onSourceClick,
 }: DocumentViewerProps) {
   const companyInfo = COMPANY_INFO[market];
+  const [selectedTextContext, setSelectedTextContext] = useState<SelectedTextContext | null>(null);
+
+  const handleDiscussWithAI = (text: string, page: number) => {
+    setSelectedTextContext({ text, page });
+  };
+
+  const handleClearSelectedText = () => {
+    setSelectedTextContext(null);
+  };
 
   return (
     <div className="viewer-modal">
@@ -52,6 +64,7 @@ export function DocumentViewer({
           targetPage={viewerState.targetPage}
           highlightText={viewerState.highlightText}
           onClose={onClose}
+          onDiscussWithAI={handleDiscussWithAI}
         />
 
         {/* Exhibits Sidebar (BamSEC-style) */}
@@ -72,6 +85,9 @@ export function DocumentViewer({
             section: viewerState.targetSection,
             highlight: viewerState.highlightText,
           }}
+          onSourceClick={onSourceClick}
+          selectedTextContext={selectedTextContext}
+          onClearSelectedText={handleClearSelectedText}
         />
       </div>
     </div>

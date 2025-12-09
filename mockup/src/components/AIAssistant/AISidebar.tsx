@@ -1,9 +1,16 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { Market, AIMessage, AIResponse } from '@/types';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { Market, AIMessage, AIResponse, SourceReference, SelectedTextContext } from '@/types';
 import aiResponsesAmat from '@/data/ai-responses-amat.json';
 import aiResponsesSkhynix from '@/data/ai-responses-skhynix.json';
+import { PDFModal } from './PDFModal';
+
+interface AmountLinkData {
+  amount: string;
+  page: number;
+  highlightText: string;
+}
 
 interface AISidebarProps {
   market: Market;
@@ -14,6 +21,9 @@ interface AISidebarProps {
     section: string;
     highlight: string;
   };
+  onSourceClick?: (ref: SourceReference) => void;
+  selectedTextContext?: SelectedTextContext | null;
+  onClearSelectedText?: () => void;
 }
 
 export function AISidebar({
@@ -21,10 +31,14 @@ export function AISidebar({
   messages,
   setMessages,
   currentContext,
+  onSourceClick,
+  selectedTextContext,
+  onClearSelectedText,
 }: AISidebarProps) {
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [pdfModalData, setPdfModalData] = useState<AmountLinkData | null>(null);
 
   const aiData = market === 'US' ? aiResponsesAmat : aiResponsesSkhynix;
   
@@ -38,7 +52,7 @@ export function AISidebar({
     : [
         { label: '요약', query: '이 주석 요약해줘' },
         { label: '전년 비교', query: '전년 대비 비교해줘' },
-        { label: '회계정책', query: '회계정책 설명해줘' },
+        { label: '설비투자액', query: '2024년도 반도체 설비 투자액 얼마야?' },
         { label: '연결/별도', query: '연결과 별도 재무제표 차이점은?' },
       ];
 
@@ -98,21 +112,77 @@ export function AISidebar({
     setIsTyping(false);
   };
 
+  const escapeHtml = (unsafe: string): string => {
+    return unsafe
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  };
+
+  const parseSourceReference = useCallback((sourceText: string): SourceReference | null => {
+    // Extract page number from patterns like "p.67", "p.45", "페이지 45"
+    const pageMatch = sourceText.match(/p\.?\s*(\d+)|페이지\s*(\d+)|page\s*(\d+)/i);
+    const page = pageMatch ? parseInt(pageMatch[1] || pageMatch[2] || pageMatch[3]) : 1;
+    
+    // Extract section from patterns like "Note 4", "주석 5"
+    const sectionMatch = sourceText.match(/Note\s*(\d+)|주석\s*(\d+)/i);
+    const section = sectionMatch ? `note-${sectionMatch[1] || sectionMatch[2]}` : undefined;
+    
+    return { page, section, label: sourceText };
+  }, []);
+
+  const handleSourceLinkClick = useCallback((sourceText: string) => {
+    const ref = parseSourceReference(sourceText);
+    if (ref && onSourceClick) {
+      onSourceClick(ref);
+    }
+  }, [parseSourceReference, onSourceClick]);
+
   const renderMarkdown = (content: string) => {
-    let html = content
+    // First, extract and replace amount links with placeholders [[amount|p.page|highlight]]
+    const amountLinkPattern = /\[\[([^|]+)\|p\.(\d+)\|([^\]]+)\]\]/g;
+    const amountLinks: AmountLinkData[] = [];
+    let processedContent = content.replace(amountLinkPattern, (match, amount, page, highlight) => {
+      amountLinks.push({ amount: amount.trim(), page: parseInt(page), highlightText: highlight.trim() });
+      return `__AMOUNT_LINK_${amountLinks.length - 1}__`;
+    });
+
+    // Extract and replace source references with placeholders
+    const sourcePattern = /\[(Source|출처):\s*([^\]]+)\]/g;
+    const sources: string[] = [];
+    processedContent = processedContent.replace(sourcePattern, (match, type, sourceText) => {
+      sources.push(sourceText.trim());
+      return `__SOURCE_${sources.length - 1}__`;
+    });
+
+    let html = processedContent
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\n\n/g, '</p><p>')
       .replace(/\n/g, '<br/>')
       .replace(/\|(.*?)\|/g, (match) => {
         const cells = match.split('|').filter(Boolean);
-        return `<tr>${cells.map(c => `<td>${c.trim()}</td>`).join('')}</tr>`;
+        return `<tr>${cells.map(c => `<td>${escapeHtml(c.trim())}</td>`).join('')}</tr>`;
       });
     
     if (html.includes('<tr>')) {
       html = html.replace(/(<tr>.*<\/tr>)+/g, '<table class="w-full border-collapse my-2">$&</table>');
     }
+
+    // Replace amount link placeholders with clickable links
+    amountLinks.forEach((link, index) => {
+      const linkHtml = `<span class="ai-amount-link" data-amount-index="${index}">${escapeHtml(link.amount)}</span>`;
+      html = html.replace(`__AMOUNT_LINK_${index}__`, linkHtml);
+    });
+
+    // Replace source placeholders with clickable links
+    sources.forEach((source, index) => {
+      const linkHtml = `<span class="ai-source-link" data-source-index="${index}">📄 ${market === 'US' ? 'Source' : '출처'}: ${escapeHtml(source)}</span>`;
+      html = html.replace(`__SOURCE_${index}__`, linkHtml);
+    });
     
-    return { __html: `<p>${html}</p>` };
+    return { __html: `<p>${html}</p>`, sources, amountLinks };
   };
 
   return (
@@ -141,6 +211,31 @@ export function AISidebar({
         </div>
       </div>
 
+      {/* Selected Text Context */}
+      {selectedTextContext && (
+        <div className="ai-selected-context">
+          <div className="ai-selected-context-header">
+            <span className="ai-selected-context-label">
+              📌 {market === 'US' ? 'Selected Text' : '선택한 텍스트'}
+            </span>
+            <button 
+              className="ai-selected-context-close"
+              onClick={onClearSelectedText}
+            >
+              ✕
+            </button>
+          </div>
+          <div className="ai-selected-context-quote">
+            &ldquo;{selectedTextContext.text.length > 150 
+              ? selectedTextContext.text.slice(0, 150) + '...' 
+              : selectedTextContext.text}&rdquo;
+          </div>
+          <div className="ai-selected-context-meta">
+            {market === 'US' ? 'Page' : '페이지'} {selectedTextContext.page}
+          </div>
+        </div>
+      )}
+
       {/* Messages */}
       <div className="ai-messages">
         {messages.length === 0 && (
@@ -154,20 +249,38 @@ export function AISidebar({
           </div>
         )}
 
-        {messages.map((msg, idx) => (
-          <div
-            key={idx}
-            className={`ai-message ai-message-${msg.role}`}
-          >
+        {messages.map((msg, idx) => {
+          const rendered = renderMarkdown(msg.content);
+          return (
             <div
-              className="ai-message-content"
-              dangerouslySetInnerHTML={renderMarkdown(msg.content)}
-            />
-            <div className="ai-message-timestamp">
-              {msg.timestamp.toLocaleTimeString()}
+              key={idx}
+              className={`ai-message ai-message-${msg.role}`}
+            >
+              <div
+                className="ai-message-content"
+                dangerouslySetInnerHTML={rendered}
+                onClick={(e) => {
+                  const target = e.target as HTMLElement;
+                  if (target.classList.contains('ai-source-link')) {
+                    const sourceIndex = parseInt(target.dataset.sourceIndex || '0');
+                    if (rendered.sources[sourceIndex]) {
+                      handleSourceLinkClick(rendered.sources[sourceIndex]);
+                    }
+                  }
+                  if (target.classList.contains('ai-amount-link')) {
+                    const amountIndex = parseInt(target.dataset.amountIndex || '0');
+                    if (rendered.amountLinks[amountIndex]) {
+                      setPdfModalData(rendered.amountLinks[amountIndex]);
+                    }
+                  }
+                }}
+              />
+              <div className="ai-message-timestamp">
+                {msg.timestamp.toLocaleTimeString()}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         {isTyping && (
           <div className="ai-message ai-message-assistant">
@@ -224,6 +337,15 @@ export function AISidebar({
           </button>
         </div>
       </div>
+
+      {/* PDF Modal */}
+      <PDFModal
+        isOpen={!!pdfModalData}
+        onClose={() => setPdfModalData(null)}
+        market={market}
+        targetPage={pdfModalData?.page || 1}
+        highlightText={pdfModalData?.highlightText || ''}
+      />
     </div>
   );
 }

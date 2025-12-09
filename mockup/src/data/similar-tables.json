@@ -1,0 +1,202 @@
+{
+  "US": [
+    {
+      "id": "10k-fy2024",
+      "filingType": "10-K",
+      "period": "FY 2024",
+      "endDate": "10/27/24",
+      "filedDate": "12/13/24",
+      "data": [
+        { "item": "Net sales", "values": [27176, 2.3] },
+        { "item": "Cost of products sold", "values": [15715, 1.8] },
+        { "item": "Gross profit", "values": [11461, 3.1] },
+        { "item": "Operating income", "values": [7891, 4.5] },
+        { "item": "Net income", "values": [7180, 5.2] }
+      ]
+    },
+    {
+      "id": "10k-fy2023",
+      "filingType": "10-K",
+      "period": "FY 2023",
+      "endDate": "10/29/23",
+      "filedDate": "12/15/23",
+      "data": [
+        { "item": "Net sales", "values": [26563, -1.2] },
+        { "item": "Cost of products sold", "values": [15437, -0.8] },
+        { "item": "Gross profit", "values": [11126, -1.9] },
+        { "item": "Operating income", "values": [7552, -2.1] },
+        { "item": "Net income", "values": [6825, -3.4] }
+      ]
+    },
+    {
+      "id": "10k-fy2022",
+      "filingType": "10-K",
+      "period": "FY 2022",
+      "endDate": "10/30/22",
+      "filedDate": "12/16/22",
+      "data": [
+        { "item": "Net sales", "values": [25785, 12.4] },
+        { "item": "Cost of products sold", "values": [14892, 11.2] },
+        { "item": "Gross profit", "values": [10893, 14.1] },
+        { "item": "Operating income", "values": [7298, 15.8] },
+        { "item": "Net income", "values": [6536, 17.2] }
+      ]
+    },
+    {
+      "id": "10q-q3-2024",
+      "filingType": "10-Q",
+      "period": "Q3",
+      "endDate": "07/28/24",
+      "filedDate": "08/22/24",
+      "data": [
+        { "item": "Net sales", "values": [6778, 5.1] },
+        { "item": "Cost of products sold", "values": [3912, 4.2] },
+        { "item": "Gross profit", "values": [2866, 6.3] },
+        { "item": "Operating income", "values": [1982, 7.1] },
+        { "item": "Net income", "values": [1795, 8.4] }
+      ]
+    },
+    {
+      "id": "10q-q2-2024",
+      "filingType": "10-Q",
+      "period": "Q2",
+      "endDate": "04/28/24",
+      "filedDate": "05/23/24",
+      "data": [
+        { "item": "Net sales", "values": [6645, 3.8] },
+        { "item": "Cost of products sold", "values": [3845, 3.2] },
+        { "item": "Gross profit", "values": [2800, 4.6] },
+        { "item": "Operating income", "values": [1923, 5.2] },
+        { "item": "Net income", "values": [1742, 6.1] }
+      ]
+    },
+    {
+      "id": "10q-q1-2024",
+      "filingType": "10-Q",
+      "period": "Q1",
+      "endDate": "01/28/24",
+      "filedDate": "02/22/24",
+      "data": [
+        { "item": "Net sales", "values": [6453, 2.1] },
+        { "item": "Cost of products sold", "values": [3756, 1.8] },
+        { "item": "Gross profit", "values": [2697, 2.5] },
+        { "item": "Operating income", "values": [1845, 3.1] },
+        { "item": "Net income", "values": [1668, 3.8] }
+      ]
+    },
+    {
+      "id": "10k-fy2021",
+      "filingType": "10-K",
+      "period": "FY 2021",
+      "endDate": "10/31/21",
+      "filedDate": "12/17/21",
+      "data": [
+        { "item": "Net sales", "values": [22944, 34.2] },
+        { "item": "Cost of products sold", "values": [13392, 32.1] },
+        { "item": "Gross profit", "values": [9552, 37.5] },
+        { "item": "Operating income", "values": [6302, 42.1] },
+        { "item": "Net income", "values": [5578, 45.3] }
+      ]
+    },
+    {
+      "id": "10k-fy2020",
+      "filingType": "10-K",
+      "period": "FY 2020",
+      "endDate": "10/25/20",
+      "filedDate": "12/11/20",
+      "data": [
+        { "item": "Net sales", "values": [17090, 18.5] },
+        { "item": "Cost of products sold", "values": [10137, 17.2] },
+        { "item": "Gross profit", "values": [6953, 20.8] },
+        { "item": "Operating income", "values": [4434, 24.3] },
+        { "item": "Net income", "values": [3838, 27.1] }
+      ]
+    }
+  ],
+  "KR": [
+    {
+      "id": "annual-75",
+      "filingType": "사업보고서",
+      "period": "제75기",
+      "endDate": "2023.12.31",
+      "filedDate": "2024.03.21",
+      "data": [
+        { "item": "매출액", "values": [32765983, -31.8] },
+        { "item": "매출원가", "values": [28921456, -25.2] },
+        { "item": "매출총이익", "values": [3844527, -58.4] },
+        { "item": "영업이익", "values": [-7732619, -215.3] },
+        { "item": "당기순이익", "values": [-9112638, -198.7] }
+      ]
+    },
+    {
+      "id": "annual-74",
+      "filingType": "사업보고서",
+      "period": "제74기",
+      "endDate": "2022.12.31",
+      "filedDate": "2023.03.16",
+      "data": [
+        { "item": "매출액", "values": [44649450, 8.2] },
+        { "item": "매출원가", "values": [35234521, 12.3] },
+        { "item": "매출총이익", "values": [9414929, -3.8] },
+        { "item": "영업이익", "values": [6986287, -12.1] },
+        { "item": "당기순이익", "values": [5516342, -15.4] }
+      ]
+    },
+    {
+      "id": "annual-73",
+      "filingType": "사업보고서",
+      "period": "제73기",
+      "endDate": "2021.12.31",
+      "filedDate": "2022.03.17",
+      "data": [
+        { "item": "매출액", "values": [42997753, 34.1] },
+        { "item": "매출원가", "values": [31379826, 28.5] },
+        { "item": "매출총이익", "values": [11617927, 48.3] },
+        { "item": "영업이익", "values": [9657832, 62.4] },
+        { "item": "당기순이익", "values": [8582452, 71.2] }
+      ]
+    },
+    {
+      "id": "quarterly-75-q3",
+      "filingType": "분기보고서",
+      "period": "제75기 3분기",
+      "endDate": "2023.09.30",
+      "filedDate": "2023.11.14",
+      "data": [
+        { "item": "매출액", "values": [9066752, -28.4] },
+        { "item": "매출원가", "values": [8124563, -22.1] },
+        { "item": "매출총이익", "values": [942189, -62.3] },
+        { "item": "영업이익", "values": [-1823456, -178.2] },
+        { "item": "당기순이익", "values": [-2145678, -165.8] }
+      ]
+    },
+    {
+      "id": "quarterly-75-q2",
+      "filingType": "반기보고서",
+      "period": "제75기 반기",
+      "endDate": "2023.06.30",
+      "filedDate": "2023.08.14",
+      "data": [
+        { "item": "매출액", "values": [7256123, -47.2] },
+        { "item": "매출원가", "values": [6892341, -38.5] },
+        { "item": "매출총이익", "values": [363782, -91.2] },
+        { "item": "영업이익", "values": [-2912345, -245.6] },
+        { "item": "당기순이익", "values": [-3456789, -223.4] }
+      ]
+    },
+    {
+      "id": "annual-72",
+      "filingType": "사업보고서",
+      "period": "제72기",
+      "endDate": "2020.12.31",
+      "filedDate": "2021.03.18",
+      "data": [
+        { "item": "매출액", "values": [31900417, 19.8] },
+        { "item": "매출원가", "values": [24412536, 18.2] },
+        { "item": "매출총이익", "values": [7487881, 24.6] },
+        { "item": "영업이익", "values": [5012345, 31.2] },
+        { "item": "당기순이익", "values": [4231567, 28.9] }
+      ]
+    }
+  ]
+}
