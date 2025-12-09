@@ -1,0 +1,86 @@
+{
+  "amat_10k": {
+    "page_45": [
+      {
+        "id": "t1",
+        "x": 72,
+        "y": 120,
+        "width": 468,
+        "height": 180,
+        "title": "Net Revenue by Reportable Segment"
+      }
+    ],
+    "page_46": [
+      {
+        "id": "t2",
+        "x": 72,
+        "y": 200,
+        "width": 468,
+        "height": 220,
+        "title": "Results of Operations"
+      }
+    ],
+    "page_55": [
+      {
+        "id": "t3",
+        "x": 72,
+        "y": 150,
+        "width": 468,
+        "height": 250,
+        "title": "Consolidated Statements of Operations"
+      }
+    ],
+    "page_56": [
+      {
+        "id": "t4",
+        "x": 72,
+        "y": 100,
+        "width": 468,
+        "height": 300,
+        "title": "Consolidated Balance Sheets"
+      }
+    ],
+    "page_58": [
+      {
+        "id": "t5",
+        "x": 72,
+        "y": 120,
+        "width": 468,
+        "height": 280,
+        "title": "Consolidated Statements of Cash Flows"
+      }
+    ]
+  },
+  "sk_hynix_10k": {
+    "page_30": [
+      {
+        "id": "t1",
+        "x": 72,
+        "y": 150,
+        "width": 468,
+        "height": 200,
+        "title": "연결 재무상태표"
+      }
+    ],
+    "page_32": [
+      {
+        "id": "t2",
+        "x": 72,
+        "y": 120,
+        "width": 468,
+        "height": 250,
+        "title": "연결 손익계산서"
+      }
+    ],
+    "page_35": [
+      {
+        "id": "t3",
+        "x": 72,
+        "y": 100,
+        "width": 468,
+        "height": 280,
+        "title": "연결 현금흐름표"
+      }
+    ]
+  }
+}

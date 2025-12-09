@@ -104,3 +104,8 @@ export interface SimilarTable {
     values: (number | string)[];
   }[];
 }
+
+export interface SelectedTextContext {
+  text: string;
+  page: number;
+}

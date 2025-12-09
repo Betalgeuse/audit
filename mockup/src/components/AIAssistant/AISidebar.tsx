@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Market, AIMessage, AIResponse, SourceReference } from '@/types';
+import { Market, AIMessage, AIResponse, SourceReference, SelectedTextContext } from '@/types';
 import aiResponsesAmat from '@/data/ai-responses-amat.json';
 import aiResponsesSkhynix from '@/data/ai-responses-skhynix.json';
 import { PDFModal } from './PDFModal';
@@ -22,6 +22,8 @@ interface AISidebarProps {
     highlight: string;
   };
   onSourceClick?: (ref: SourceReference) => void;
+  selectedTextContext?: SelectedTextContext | null;
+  onClearSelectedText?: () => void;
 }
 
 export function AISidebar({
@@ -30,6 +32,8 @@ export function AISidebar({
   setMessages,
   currentContext,
   onSourceClick,
+  selectedTextContext,
+  onClearSelectedText,
 }: AISidebarProps) {
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -197,6 +201,31 @@ export function AISidebar({
           {currentContext.section && ` · ${currentContext.section}`}
         </div>
       </div>
+
+      {/* Selected Text Context */}
+      {selectedTextContext && (
+        <div className="ai-selected-context">
+          <div className="ai-selected-context-header">
+            <span className="ai-selected-context-label">
+              📌 {market === 'US' ? 'Selected Text' : '선택한 텍스트'}
+            </span>
+            <button 
+              className="ai-selected-context-close"
+              onClick={onClearSelectedText}
+            >
+              ✕
+            </button>
+          </div>
+          <div className="ai-selected-context-quote">
+            &ldquo;{selectedTextContext.text.length > 150 
+              ? selectedTextContext.text.slice(0, 150) + '...' 
+              : selectedTextContext.text}&rdquo;
+          </div>
+          <div className="ai-selected-context-meta">
+            {market === 'US' ? 'Page' : '페이지'} {selectedTextContext.page}
+          </div>
+        </div>
+      )}
 
       {/* Messages */}
       <div className="ai-messages">

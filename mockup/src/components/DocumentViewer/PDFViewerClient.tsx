@@ -18,11 +18,14 @@ interface TableInfo {
   title: string;
 }
 
+type TranslationLang = 'original' | 'en' | 'ja' | 'zh';
+
 interface PDFViewerClientProps {
   market: Market;
   targetPage: number;
   highlightText: string;
   onClose: () => void;
+  onDiscussWithAI?: (text: string, page: number) => void;
 }
 
 export function PDFViewerClient({
@@ -30,6 +33,7 @@ export function PDFViewerClient({
   targetPage,
   highlightText,
   onClose,
+  onDiscussWithAI,
 }: PDFViewerClientProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const textLayerRef = useRef<HTMLDivElement>(null);
@@ -43,15 +47,39 @@ export function PDFViewerClient({
   const [error, setError] = useState<string | null>(null);
   const [pdfDoc, setPdfDoc] = useState<any>(null);
   const [currentTables, setCurrentTables] = useState<TableInfo[]>([]);
+  const [translationLang, setTranslationLang] = useState<TranslationLang>('original');
+  const [showLangMenu, setShowLangMenu] = useState(false);
+  const [selectionPopup, setSelectionPopup] = useState<{text: string; x: number; y: number} | null>(null);
 
   const pdfKey = market === 'US' ? 'amat_10k' : 'sk_hynix_10k';
-  const pdfPath = market === 'US' 
-    ? '/pdfs/amat_10k.pdf'
-    : '/pdfs/sk_hynix_10k.pdf';
+  
+  const getPdfPath = () => {
+    if (market === 'US') return '/pdfs/amat_10k.pdf';
+    if (translationLang === 'original') return '/pdfs/sk_hynix_10k.pdf';
+    return `/pdfs/sk_hynix_10k_${translationLang}.pdf`;
+  };
+  
+  const pdfPath = getPdfPath();
 
-  const documentTitle = market === 'US' 
-    ? 'AMAT 10-K FY2024' 
-    : 'SK하이닉스 사업보고서 2024';
+  const getDocumentTitle = () => {
+    if (market === 'US') return 'AMAT 10-K FY2024';
+    const titles: Record<TranslationLang, string> = {
+      original: 'SK하이닉스 사업보고서 2024',
+      en: 'SK hynix Annual Report 2024',
+      ja: 'SKハイニックス 事業報告書 2024',
+      zh: 'SK海力士 年度报告 2024',
+    };
+    return titles[translationLang];
+  };
+
+  const documentTitle = getDocumentTitle();
+
+  const langOptions: { value: TranslationLang; label: string; flag: string }[] = [
+    { value: 'original', label: '한국어', flag: '🇰🇷' },
+    { value: 'en', label: 'English', flag: '🇺🇸' },
+    { value: 'ja', label: '日本語', flag: '🇯🇵' },
+    { value: 'zh', label: '中文', flag: '🇨🇳' },
+  ];
 
   useEffect(() => {
     const loadPdf = async () => {
@@ -163,6 +191,39 @@ export function PDFViewerClient({
     renderPage();
   }, [renderPage]);
 
+  useEffect(() => {
+    const handleMouseUp = (e: MouseEvent) => {
+      setTimeout(() => {
+        const selection = window.getSelection();
+        const text = selection?.toString().trim();
+        if (text && text.length > 0 && textLayerRef.current?.contains(e.target as Node)) {
+          setSelectionPopup({ text, x: e.clientX, y: e.clientY - 50 });
+        } else {
+          setSelectionPopup(null);
+        }
+      }, 10);
+    };
+
+    const handleMouseDown = () => {
+      setSelectionPopup(null);
+    };
+
+    document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('mousedown', handleMouseDown);
+    return () => {
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mousedown', handleMouseDown);
+    };
+  }, []);
+
+  const handleDiscussClick = () => {
+    if (selectionPopup && onDiscussWithAI) {
+      onDiscussWithAI(selectionPopup.text, currentPage);
+      setSelectionPopup(null);
+      window.getSelection()?.removeAllRanges();
+    }
+  };
+
   const goToPrevPage = () => {
     const newPage = Math.max(1, currentPage - 1);
     setCurrentPage(newPage);
@@ -273,6 +334,53 @@ export function PDFViewerClient({
               </svg>
             </button>
           </div>
+
+          {market === 'KR' && (
+            <>
+              <div className="h-5 w-px bg-white/20" />
+              <div className="relative">
+                <button 
+                  onClick={() => setShowLangMenu(!showLangMenu)}
+                  className="pdf-toolbar-btn px-3 flex items-center gap-2"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="2" y1="12" x2="22" y2="12" />
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                  </svg>
+                  <span className="text-sm">
+                    {langOptions.find(l => l.value === translationLang)?.flag}{' '}
+                    {langOptions.find(l => l.value === translationLang)?.label}
+                  </span>
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </button>
+                {showLangMenu && (
+                  <div className="lang-dropdown-menu">
+                    {langOptions.map((option) => (
+                      <button
+                        key={option.value}
+                        onClick={() => {
+                          setTranslationLang(option.value);
+                          setShowLangMenu(false);
+                        }}
+                        className={translationLang === option.value ? 'active' : ''}
+                      >
+                        <span>{option.flag}</span>
+                        <span>{option.label}</span>
+                        {translationLang === option.value && (
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <polyline points="20 6 9 17 4 12" />
+                          </svg>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -305,6 +413,25 @@ export function PDFViewerClient({
                 onLink={handleTableLink}
               />
             ))}
+          </div>
+        )}
+
+        {selectionPopup && (
+          <div 
+            className="selection-toolbar"
+            style={{ 
+              position: 'fixed',
+              top: selectionPopup.y,
+              left: selectionPopup.x,
+              transform: 'translateX(-50%)',
+            }}
+          >
+            <button onClick={handleDiscussClick} className="selection-toolbar-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+              </svg>
+              {market === 'US' ? 'Discuss with AI' : 'AI와 논의하기'}
+            </button>
           </div>
         )}
       </div>
