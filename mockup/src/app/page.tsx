@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Market, ViewerState, FootnotePopupState, AIMessage, Footnote, SourceDocument, DocumentType, SourceReference } from '@/types';
 import { UploadLanding } from '@/components/LandingPage/UploadLanding';
 import { DocumentViewer } from '@/components/DocumentViewer/DocumentViewer';
@@ -102,7 +102,7 @@ export default function Home() {
     }
   };
 
-  const handleFileUpload = (files: FileList) => {
+  const handleFileUpload = useCallback((files: FileList) => {
     const newDocs: SourceDocument[] = Array.from(files).map((file, index) => ({
       id: `upload-${Date.now()}-${index}`,
       name: file.name,
@@ -113,7 +113,18 @@ export default function Home() {
       uploadedAt: new Date(),
     }));
     setDocuments((prev) => [...prev, ...newDocs]);
-  };
+  }, []);
+
+  // Cleanup blob URLs on unmount
+  useEffect(() => {
+    return () => {
+      documents.forEach((doc) => {
+        if (doc.path.startsWith('blob:')) {
+          URL.revokeObjectURL(doc.path);
+        }
+      });
+    };
+  }, [documents]);
 
   const handleCloseViewer = () => {
     setViewerState((prev) => ({ ...prev, isOpen: false }));

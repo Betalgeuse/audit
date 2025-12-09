@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Market, Footnote, FinancialData, ExportFormat, SimilarTable } from '@/types';
 import { TableActionBar } from './TableActionBar';
 import { SimilarTablesPanel } from './SimilarTablesPanel';
@@ -25,8 +25,25 @@ export function FinancialTable({
 }: FinancialTableProps) {
   const [showSimilarTables, setShowSimilarTables] = useState(false);
   const [showToast, setShowToast] = useState<string | null>(null);
+  const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const similarTables: SimilarTable[] = similarTablesData[market] || [];
+
+  useEffect(() => {
+    return () => {
+      if (toastTimeoutRef.current) {
+        clearTimeout(toastTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const showToastMessage = (message: string) => {
+    if (toastTimeoutRef.current) {
+      clearTimeout(toastTimeoutRef.current);
+    }
+    setShowToast(message);
+    toastTimeoutRef.current = setTimeout(() => setShowToast(null), 2000);
+  };
 
   const handleExport = (format: ExportFormat) => {
     const formatNames: Record<ExportFormat, string> = {
@@ -35,13 +52,16 @@ export function FinancialTable({
       image: 'Image (.png)',
       pdf: 'PDF (.pdf)',
     };
-    setShowToast(`Downloading as ${formatNames[format]}...`);
-    setTimeout(() => setShowToast(null), 2000);
+    showToastMessage(`Downloading as ${formatNames[format]}...`);
   };
 
-  const handleLink = () => {
-    setShowToast('Link copied to clipboard!');
-    setTimeout(() => setShowToast(null), 2000);
+  const handleLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      showToastMessage('Link copied to clipboard!');
+    } catch {
+      showToastMessage('Failed to copy link');
+    }
   };
   const periods = market === 'US' 
     ? ['FY15', 'FY16', 'FY17']

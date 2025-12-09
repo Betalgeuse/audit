@@ -26,8 +26,6 @@ export function UploadLanding({
   aiMessages,
   setAiMessages,
 }: UploadLandingProps) {
-  const fileInputRef = { current: null as HTMLInputElement | null };
-
   const handleAddSource = () => {
     const input = document.createElement('input');
     input.type = 'file';

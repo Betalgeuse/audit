@@ -112,6 +112,15 @@ export function AISidebar({
     setIsTyping(false);
   };
 
+  const escapeHtml = (unsafe: string): string => {
+    return unsafe
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  };
+
   const parseSourceReference = useCallback((sourceText: string): SourceReference | null => {
     // Extract page number from patterns like "p.67", "p.45", "페이지 45"
     const pageMatch = sourceText.match(/p\.?\s*(\d+)|페이지\s*(\d+)|page\s*(\d+)/i);
@@ -154,7 +163,7 @@ export function AISidebar({
       .replace(/\n/g, '<br/>')
       .replace(/\|(.*?)\|/g, (match) => {
         const cells = match.split('|').filter(Boolean);
-        return `<tr>${cells.map(c => `<td>${c.trim()}</td>`).join('')}</tr>`;
+        return `<tr>${cells.map(c => `<td>${escapeHtml(c.trim())}</td>`).join('')}</tr>`;
       });
     
     if (html.includes('<tr>')) {
@@ -163,13 +172,13 @@ export function AISidebar({
 
     // Replace amount link placeholders with clickable links
     amountLinks.forEach((link, index) => {
-      const linkHtml = `<span class="ai-amount-link" data-amount-index="${index}">${link.amount}</span>`;
+      const linkHtml = `<span class="ai-amount-link" data-amount-index="${index}">${escapeHtml(link.amount)}</span>`;
       html = html.replace(`__AMOUNT_LINK_${index}__`, linkHtml);
     });
 
     // Replace source placeholders with clickable links
     sources.forEach((source, index) => {
-      const linkHtml = `<span class="ai-source-link" data-source-index="${index}">📄 ${market === 'US' ? 'Source' : '출처'}: ${source}</span>`;
+      const linkHtml = `<span class="ai-source-link" data-source-index="${index}">📄 ${market === 'US' ? 'Source' : '출처'}: ${escapeHtml(source)}</span>`;
       html = html.replace(`__SOURCE_${index}__`, linkHtml);
     });
     

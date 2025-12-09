@@ -19,7 +19,10 @@ export function UploadArea({ onFileUpload, sourceCount, maxSources = 300 }: Uplo
 
   const handleDragLeave = (e: DragEvent) => {
     e.preventDefault();
-    setIsDragging(false);
+    // Only reset if leaving the drop zone entirely, not entering a child
+    if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+      setIsDragging(false);
+    }
   };
 
   const handleDrop = (e: DragEvent) => {
